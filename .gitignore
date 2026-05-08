@@ -1,0 +1,13 @@
+.env
+.env.*
+
+# Python virtual environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local verification artifacts (Drafts)
+Drafts/verify_local_api_ffmpeg/
+Drafts/verify_local_api_ffmpeg/output/
+Drafts/.DS_Store
