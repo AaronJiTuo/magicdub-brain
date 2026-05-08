@@ -11,3 +11,6 @@ __pycache__/
 Drafts/verify_local_api_ffmpeg/
 Drafts/verify_local_api_ffmpeg/output/
 Drafts/.DS_Store
+
+# Local tools / scripts (not part of brain docs)
+tools/
