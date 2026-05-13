@@ -7,6 +7,10 @@ venv/
 __pycache__/
 *.pyc
 
+# Drafts: 端到端试验流水线（含 output、.env、大文件等）
+Drafts/test_by_step/
+pyrightconfig.json
+
 # Local verification artifacts (Drafts)
 Drafts/verify_local_api_ffmpeg/
 Drafts/verify_local_api_ffmpeg/output/
@@ -14,3 +18,6 @@ Drafts/.DS_Store
 
 # Local tools / scripts (not part of brain docs)
 tools/
+
+.vscode/
+
