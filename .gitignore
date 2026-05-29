@@ -22,3 +22,7 @@ tools/
 .vscode/
 .cursor/
 
+# Local private drafts for brain workflow
+Drafts/private/
+*.local.md
+
