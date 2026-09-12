@@ -1,0 +1,109 @@
+{
+  "archived_at": "2026-09-13T01:41:13+08:00",
+  "source_repository": "https://github.com/shishengkai/magicdub-cloud.git",
+  "source_scope": "Local working-tree documents; remote contents not verified",
+  "source_branch": "main",
+  "source_head_commit": null,
+  "source_tracked_files": 0,
+  "source_document_status": "All 15 Markdown documents untracked",
+  "local_checkpoint_tree": "7fbc71f6a00f0f28f2889dcfe65eaa3f5150d512",
+  "checkpoint_comparison": "All 15 Markdown documents match the local Codex checkpoint tree; it is not a branch commit",
+  "excluded": {
+    ".DS_Store": "macOS Finder metadata",
+    ".git/": "Repository metadata; no branch commits, checkpoint documents already preserved"
+  },
+  "document_count": 15,
+  "document_bytes": 22952,
+  "files": [
+    {
+      "source_path": "README.md",
+      "archive_path": "source/README.md",
+      "bytes": 1284,
+      "sha256": "0ec323089ed9305e3af2a46379b973b28317fb45fc01b9195cce471bf5e1dc34"
+    },
+    {
+      "source_path": "docs/adr/001-private-monorepo.md",
+      "archive_path": "source/docs/adr/001-private-monorepo.md",
+      "bytes": 690,
+      "sha256": "c0c40847fe8482a59dc9feda8d55d6f0ee17ee702bd5888bd66006ef685b5c39"
+    },
+    {
+      "source_path": "docs/adr/002-single-public-api.md",
+      "archive_path": "source/docs/adr/002-single-public-api.md",
+      "bytes": 591,
+      "sha256": "1cdb63bcf6bb96ecb6b52acbb01dc53ebb51337e6fc86591d88c5c2acb09128e"
+    },
+    {
+      "source_path": "docs/adr/003-website-as-api-client.md",
+      "archive_path": "source/docs/adr/003-website-as-api-client.md",
+      "bytes": 540,
+      "sha256": "be8f5f84dc7f4b183591eb42cfeb8746b28ccc5ec471b58e481fe8b9fc382ced"
+    },
+    {
+      "source_path": "docs/adr/004-cloudflare-plus-modal.md",
+      "archive_path": "source/docs/adr/004-cloudflare-plus-modal.md",
+      "bytes": 781,
+      "sha256": "c51fc063e4b907df3e3c11c6ae126d92158d1bbe5a0e2ef48447482126f4eb21"
+    },
+    {
+      "source_path": "docs/adr/005-stateless-workers-stateful-storage.md",
+      "archive_path": "source/docs/adr/005-stateless-workers-stateful-storage.md",
+      "bytes": 617,
+      "sha256": "dd142f8baa63108f0bdb1e5aec70afa080f4c97699c2659b28a2909fb6f6b0d4"
+    },
+    {
+      "source_path": "docs/adr/006-capability-first-providers.md",
+      "archive_path": "source/docs/adr/006-capability-first-providers.md",
+      "bytes": 791,
+      "sha256": "ce8bc335f0baec5d7746c51b586788fba7c615661ff45d71ca560d486f615743"
+    },
+    {
+      "source_path": "docs/api_design.md",
+      "archive_path": "source/docs/api_design.md",
+      "bytes": 1983,
+      "sha256": "d55a591714f422ce30d91880f39d876cffa56566cc76495eaa3261bbac445e54"
+    },
+    {
+      "source_path": "docs/architecture.md",
+      "archive_path": "source/docs/architecture.md",
+      "bytes": 3077,
+      "sha256": "c9b2e114ed35dbf0367bba424939232d4080c1a3df800b9e1787f17602681b6d"
+    },
+    {
+      "source_path": "docs/domain_model.md",
+      "archive_path": "source/docs/domain_model.md",
+      "bytes": 2593,
+      "sha256": "1f2944cccb119f6b95d367a739a461481c53ef91877a7cd07647afd50857317c"
+    },
+    {
+      "source_path": "docs/oss_to_cloud_transfer.md",
+      "archive_path": "source/docs/oss_to_cloud_transfer.md",
+      "bytes": 2352,
+      "sha256": "0eb1c867f7080dd238cebc0f745406b2879b78a00d77b8e9b23e6e4eaed1a445"
+    },
+    {
+      "source_path": "docs/product_scope.md",
+      "archive_path": "source/docs/product_scope.md",
+      "bytes": 1678,
+      "sha256": "dccaf80c70faf771315cb9e62ad1dbc977b180521189b88f827f5db1d9f822d0"
+    },
+    {
+      "source_path": "docs/repo_structure.md",
+      "archive_path": "source/docs/repo_structure.md",
+      "bytes": 2064,
+      "sha256": "c6665780b545a0af8141dae5e4936b32b616a84abf595acda1c82f665c7e5202"
+    },
+    {
+      "source_path": "docs/workflow.md",
+      "archive_path": "source/docs/workflow.md",
+      "bytes": 2468,
+      "sha256": "adb952f05c6f395b10db7bed1530a1341388e76f8af3ccb4834e8d936a77f2f0"
+    },
+    {
+      "source_path": "prompts/codex_project_bootstrap.md",
+      "archive_path": "source/prompts/codex_project_bootstrap.md",
+      "bytes": 1443,
+      "sha256": "c76d1f88e0c0f67809cb2584bec8eea39512d6edcf4c85ccdb013e2d0345fd06"
+    }
+  ]
+}

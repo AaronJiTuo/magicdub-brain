@@ -43,9 +43,13 @@ magicdub-brain/
 
 ---
 
+## 当前方向
+
+2026-09-13 起，MagicDub 集中完成主要自用的 `magicdub-skills`。`magicdub-cloud` 项目取消，原 `magicdub` 暂时保留、当前不推进；未来确有对外 Web 需求时，再决定重启 `magicdub` 或新建仓库。
+
 ## 项目入口建议
 
 - 首先阅读 `Releases/00_MagicDub项目总览.md`
-- 再阅读 `Releases/01_MagicDub技术框架.md`
+- 仅在追溯历史 Web 方案时阅读 `Releases/01_MagicDub技术框架.md`；当前路线见项目总览。
 - 如果需要了解正在探索的问题，再按需查看 `Drafts/`
 
