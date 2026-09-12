@@ -14,7 +14,7 @@ MagicDub 当前集中建设面向 Codex、主要自用的视频译制技能集�
 | `magicdub-cloud` | 取消项目，不再作为后续实施或架构规划路线 |
 | 对外 Web 版 | 当前不建设；未来确有对外服务需求时，再决定重启 `magicdub` 或新建仓库 |
 
-当前推进方向见 [magicdub-skills 项目规划](05_magicdub-skill项目规划.md)中的项目定位与收敛边界，当前实际状态见 [CURRENT](../.records/CURRENT.md)。
+当前执行以 [magicdub-skills 项目规划](05_magicdub-skill项目规划.md)为准：首版只支持 Codex，包含译制、安装配置、升级三个入口；先跑通短视频，保留多人配音、声音克隆、背景保留、强制对齐和费用统计要求。复杂音轨 / 声道及长片延后。当前实际进度见 [CURRENT](../.records/CURRENT.md)。
 
 自用优先不等于撤销 MIT 或禁止未来公开技能集；公开分发按实际需要另定，也不等于启动对外 Web 服务。未来 Web 版的仓库、架构、范围与排期均未确定，不为其预建服务端平台。
 
@@ -171,4 +171,4 @@ MagicDub 是一个 **AI 原声翻译（AI Dubbing）Web 应用**：
 
 ## 来源、证据与替代关系
 
-当前路线依据 [取消 Cloud 并收敛为自用技能集](../.records/events/2026-09/2026-09-13_013354_取消Cloud并收敛为自用magicdub-skills.md)。本次决定替代此前 Web / Cloud 与技能集并存的规划，旧正文保留用于追溯；技能集定位与边界见 [项目规划](05_magicdub-skill项目规划.md)。
+当前路线依据 [取消 Cloud 并收敛为自用技能集](../.records/events/2026-09/2026-09-13_013354_取消Cloud并收敛为自用magicdub-skills.md)。本次决定替代此前 Web / Cloud 与技能集并存的规划，旧正文保留用于追溯；技能集具体要求继续依据 [正式规划](05_magicdub-skill项目规划.md)。

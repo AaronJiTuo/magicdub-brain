@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "name": "test_by_step_final_recovered",
+  "basis": "User identified final surviving test_by_step scripts as the tuned baseline. Runtime historical model snapshots are incomplete; not proof of a globally optimal preset.",
+  "source": "Drafts/test_by_step",
+  "extract": {"codec": "pcm_s16le", "sample_rate": 16000, "channels": 1},
+  "separation": {"endpoint": "fal-ai/demucs", "model": "htdemucs_ft", "stems": ["vocals"], "shifts": 1, "overlap": 0.25, "output_format": "wav"},
+  "residual": {"formula": "source - 0.98 * vocals", "duration": "min(source_duration, vocals_duration) - 0.02", "limiter": "alimiter=level_in=1:level_out=0.95:limit=0.95", "sample_format": "s16"},
+  "asr": {"endpoint": "fal-ai/wizper", "input": "separated vocals", "task": "transcribe", "language": null, "chunk_level": "segment", "max_segment_len": 20, "merge_chunks": false, "version": "3", "local_merge": false},
+  "translation": {"executor": "current Codex agent, user selected", "historical_code_model": "google/gemini-3-flash-preview", "historical_env_model": "~google/gemini-flash-latest", "historical_reasoning": {"enabled": true}, "historical_stream": false, "historical_explicit_temperature": null, "historical_explicit_output_limit": null, "batch_size": 12, "target_words": "max(1, round(duration_seconds * 4.5))", "tolerance_characters": 2, "system_prompt_file": "source/prompt_system_gemini.txt", "caveat": "External Gemini is not called; historical alias resolution is unverified."},
+  "tts": {"endpoint": "fal-ai/index-tts-2/text-to-speech", "audio_url": "current original vocal segment", "emotional_audio_url": "same original vocal segment", "prompt": "translated text", "explicit_additional_parameters": {}},
+  "alignment": {"filter": "atempo=input_duration/target_duration", "factor_range": [0.5, 4.0], "factor_decimal_places": 6, "codec": "pcm_s16le", "sample_rate": "native TTS output", "exact_pad_or_trim": false},
+  "mix": {"sample_rate": 48000, "channels": 1, "format": "fltp", "original_vocal_volume": "-100dB", "residual_volume": 1, "tts_gain": 1, "delay": "segment start milliseconds", "amix_normalize": 0, "amix_duration": "longest", "limiter": "alimiter=limit=0.98:attack=2:release=50"},
+  "export": {"video_codec": "copy", "audio_codec": "aac", "audio_bitrate": "192k", "duration": "video duration"},
+  "experiment_deviations": ["90-second sample instead of full source", "reuse baseline picture clip for identical A/B frames", "extract audio directly from original source", "Codex translation instead of external Gemini", "float PCM intermediate stores final FFmpeg filter output", "faststart enabled for preview", "safe request journaling replaces legacy blind POST retries"],
+  "git_evidence": {"engine_head": "2eb7f2404a752f8f5a8187ccefe63f596b26fb27", "first_pipeline_commit": "ae1a0e7", "unreachable_audio_blob": "5c743913b1f358c470c1a7a27470a0ca15bed85b", "unreachable_mixing_blob": "bceccd7fd00b0dd4c58c655f6fea78ae13888ce6", "finding": "Reachable history and recovered source blobs retain core DSP parameters. No evidence of wholesale parameter loss; provider routing and prototype implementation differ."}
+}

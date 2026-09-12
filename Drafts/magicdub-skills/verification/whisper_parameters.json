@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "endpoint": "fal-ai/whisper",
+  "parameters": {
+    "task": "transcribe",
+    "language": null,
+    "chunk_level": "segment",
+    "diarize": true,
+    "batch_size": 64,
+    "prompt": "",
+    "num_speakers": null
+  },
+  "input": "separation/vocals.wav",
+  "pending_decisions": [],
+  "unsupported_wizper_parameters": {
+    "max_segment_len": 20,
+    "merge_chunks": false,
+    "version": "3"
+  },
+  "documentation": "https://fal.ai/models/fal-ai/whisper/api",
+  "local_chunk_policy": "use provider chunks without local merge or 20-second split",
+  "unsupported_parameter_policy": "omit from Whisper API; preserve old values as historical evidence"
+}
