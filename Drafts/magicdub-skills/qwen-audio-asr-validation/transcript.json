@@ -1,0 +1,47 @@
+{
+  "model": "qwen-audio-3.0-asr-flash-filetrans",
+  "segments": [
+    {
+      "start": 0.08,
+      "end": 2.88,
+      "speaker": 0,
+      "text": "Your commencement from one of the finest universities in the world. "
+    },
+    {
+      "start": 6.64,
+      "end": 7.72,
+      "speaker": 0,
+      "text": "Truth be told. "
+    },
+    {
+      "start": 8.12,
+      "end": 9.52,
+      "speaker": 1,
+      "text": " fellow citizens. "
+    },
+    {
+      "start": 10.45,
+      "end": 13.37,
+      "speaker": 1,
+      "text": "The golden age of America begins right now. "
+    },
+    {
+      "start": 16.13,
+      "end": 17.05,
+      "speaker": 2,
+      "text": "dots. "
+    },
+    {
+      "start": 18.58,
+      "end": 24.02,
+      "speaker": 0,
+      "text": "i dropped out of reed college after the first six months but then stayed around as a drop in for another eighteen. "
+    },
+    {
+      "start": 24.02,
+      "end": 31.98,
+      "speaker": 1,
+      "text": " months we will be the envy of every nation and we will not allow ourselves to be taken advantage of any longer. "
+    }
+  ]
+}

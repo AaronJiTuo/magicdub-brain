@@ -1,0 +1,572 @@
+{
+  "properties": {
+    "audio_format": "pcm_s16le",
+    "channels": [
+      0
+    ],
+    "original_sampling_rate": 16000,
+    "original_duration_in_milliseconds": 32000
+  },
+  "transcripts": [
+    {
+      "channel_id": 0,
+      "content_duration_in_milliseconds": 22520,
+      "text": "Your commencement from one of the finest universities in the world. Truth be told.  fellow citizens. The golden age of America begins right now. dots. i dropped out of reed college after the first six months but then stayed around as a drop in for another eighteen.  months we will be the envy of every nation and we will not allow ourselves to be taken advantage of any longer. ",
+      "sentences": [
+        {
+          "begin_time": 80,
+          "end_time": 2880,
+          "text": "Your commencement from one of the finest universities in the world. ",
+          "sentence_id": 1,
+          "speaker_id": 0,
+          "words": [
+            {
+              "begin_time": 80,
+              "end_time": 320,
+              "text": "Your",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 320,
+              "end_time": 720,
+              "text": " commencement",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 720,
+              "end_time": 880,
+              "text": " from",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 880,
+              "end_time": 1000,
+              "text": " one",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 1000,
+              "end_time": 1080,
+              "text": " of",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 1080,
+              "end_time": 1240,
+              "text": " the",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 1240,
+              "end_time": 1800,
+              "text": " finest",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 1800,
+              "end_time": 2240,
+              "text": " universities",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 2240,
+              "end_time": 2320,
+              "text": " in",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 2320,
+              "end_time": 2440,
+              "text": " the",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 2440,
+              "end_time": 2880,
+              "text": " world",
+              "punctuation": ". ",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "begin_time": 6640,
+          "end_time": 7720,
+          "text": "Truth be told. ",
+          "sentence_id": 2,
+          "speaker_id": 0,
+          "words": [
+            {
+              "begin_time": 6640,
+              "end_time": 7040,
+              "text": "Truth",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 7040,
+              "end_time": 7280,
+              "text": " be",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 7280,
+              "end_time": 7720,
+              "text": " told",
+              "punctuation": ". ",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "begin_time": 8120,
+          "end_time": 9520,
+          "text": " fellow citizens. ",
+          "sentence_id": 3,
+          "speaker_id": 1,
+          "words": [
+            {
+              "begin_time": 8120,
+              "end_time": 8760,
+              "text": " fellow",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 8760,
+              "end_time": 9520,
+              "text": " citizens",
+              "punctuation": ". ",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "begin_time": 10450,
+          "end_time": 13370,
+          "text": "The golden age of America begins right now. ",
+          "sentence_id": 4,
+          "speaker_id": 1,
+          "words": [
+            {
+              "begin_time": 10450,
+              "end_time": 10690,
+              "text": "The",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 10690,
+              "end_time": 11050,
+              "text": " golden",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 11050,
+              "end_time": 11370,
+              "text": " age",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 11370,
+              "end_time": 11570,
+              "text": " of",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 11570,
+              "end_time": 12170,
+              "text": " America",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 12170,
+              "end_time": 12570,
+              "text": " begins",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 12570,
+              "end_time": 12810,
+              "text": " right",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 12810,
+              "end_time": 13370,
+              "text": " now",
+              "punctuation": ". ",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "begin_time": 16130,
+          "end_time": 17050,
+          "text": "dots. ",
+          "sentence_id": 5,
+          "speaker_id": 2,
+          "words": [
+            {
+              "begin_time": 16130,
+              "end_time": 17050,
+              "text": "dots",
+              "punctuation": ". ",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "begin_time": 18580,
+          "end_time": 24020,
+          "text": "i dropped out of reed college after the first six months but then stayed around as a drop in for another eighteen. ",
+          "sentence_id": 6,
+          "speaker_id": 0,
+          "words": [
+            {
+              "begin_time": 18580,
+              "end_time": 18780,
+              "text": "i",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 18780,
+              "end_time": 19060,
+              "text": " dropped",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 19060,
+              "end_time": 19140,
+              "text": " out",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 19140,
+              "end_time": 19260,
+              "text": " of",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 19260,
+              "end_time": 19340,
+              "text": " re",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 19340,
+              "end_time": 19620,
+              "text": "ed",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 19620,
+              "end_time": 20300,
+              "text": " college",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 20300,
+              "end_time": 20500,
+              "text": " after",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 20500,
+              "end_time": 20620,
+              "text": " the",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 20620,
+              "end_time": 20820,
+              "text": " first",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 20820,
+              "end_time": 21060,
+              "text": " six",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 21060,
+              "end_time": 21620,
+              "text": " months",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 21620,
+              "end_time": 21780,
+              "text": " but",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 21780,
+              "end_time": 22060,
+              "text": " then",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 22060,
+              "end_time": 22300,
+              "text": " stayed",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 22300,
+              "end_time": 22540,
+              "text": " around",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 22540,
+              "end_time": 22620,
+              "text": " as",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 22620,
+              "end_time": 22780,
+              "text": " a",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 22780,
+              "end_time": 23020,
+              "text": " drop",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 23020,
+              "end_time": 23220,
+              "text": " in",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 23220,
+              "end_time": 23340,
+              "text": " for",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 23340,
+              "end_time": 23660,
+              "text": " another",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 23660,
+              "end_time": 24020,
+              "text": " eighteen",
+              "punctuation": ". ",
+              "confidence": 1.0
+            }
+          ]
+        },
+        {
+          "begin_time": 24020,
+          "end_time": 31980,
+          "text": " months we will be the envy of every nation and we will not allow ourselves to be taken advantage of any longer. ",
+          "sentence_id": 7,
+          "speaker_id": 1,
+          "words": [
+            {
+              "begin_time": 24020,
+              "end_time": 25260,
+              "text": " months",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 25260,
+              "end_time": 25420,
+              "text": " we",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 25420,
+              "end_time": 25540,
+              "text": " will",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 25540,
+              "end_time": 25700,
+              "text": " be",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 25700,
+              "end_time": 25940,
+              "text": " the",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 25940,
+              "end_time": 26140,
+              "text": " envy",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 26140,
+              "end_time": 26340,
+              "text": " of",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 26340,
+              "end_time": 26620,
+              "text": " every",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 26620,
+              "end_time": 27340,
+              "text": " nation",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 27340,
+              "end_time": 27580,
+              "text": " and",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 27580,
+              "end_time": 27700,
+              "text": " we",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 27700,
+              "end_time": 27940,
+              "text": " will",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 27940,
+              "end_time": 28260,
+              "text": " not",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 28260,
+              "end_time": 28580,
+              "text": " allow",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 28580,
+              "end_time": 29260,
+              "text": " ourselves",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 29260,
+              "end_time": 29380,
+              "text": " to",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 29380,
+              "end_time": 29580,
+              "text": " be",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 29580,
+              "end_time": 30020,
+              "text": " taken",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 30020,
+              "end_time": 30580,
+              "text": " advantage",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 30580,
+              "end_time": 31180,
+              "text": " of",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 31180,
+              "end_time": 31420,
+              "text": " any",
+              "punctuation": "",
+              "confidence": 1.0
+            },
+            {
+              "begin_time": 31420,
+              "end_time": 31980,
+              "text": " longer",
+              "punctuation": ". ",
+              "confidence": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

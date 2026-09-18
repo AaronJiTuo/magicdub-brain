@@ -1,0 +1,94 @@
+{
+  "status": "succeeded",
+  "model": "qwen-audio-3.0-asr-flash-filetrans",
+  "task_id": "d6e44be0-b099-4d0e-bca2-02a46045d9a2",
+  "task_status": "SUCCEEDED",
+  "subtask_status": "SUCCEEDED",
+  "parameters": {
+    "diarization_enabled": true,
+    "special_word_filter": "{\"filter_with_signed\": {\"word_list\": [\"肏屄\"]}, \"system_reserved_filter\": false}",
+    "language_hints": [
+      "en"
+    ]
+  },
+  "source_sha256": "df6d7f72173914e90757d66c4185ebcaca2eff432b7ec6217737f60e8465366e",
+  "audio": {
+    "sample_rate": 16000,
+    "channels": 1,
+    "sample_width": 2,
+    "frames": 512000,
+    "seconds": 32.0
+  },
+  "base": "workspace-beijing",
+  "usage": {
+    "duration": 23
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "role": "upload_policy",
+      "status": 200,
+      "started": 1789746730.63252,
+      "elapsed_seconds": 1.455
+    },
+    {
+      "method": "POST",
+      "role": "audio_upload",
+      "status": 200,
+      "started": 1789746732.089043,
+      "elapsed_seconds": 0.172
+    },
+    {
+      "method": "POST",
+      "role": "asr_submit",
+      "status": 200,
+      "started": 1789746732.270879,
+      "elapsed_seconds": 0.182
+    },
+    {
+      "method": "GET",
+      "role": "poll",
+      "status": 200,
+      "started": 1789746732.457067,
+      "elapsed_seconds": 0.08
+    },
+    {
+      "method": "GET",
+      "role": "poll",
+      "status": 200,
+      "started": 1789746737.539464,
+      "elapsed_seconds": 0.147
+    },
+    {
+      "method": "GET",
+      "role": "result_download",
+      "status": 200,
+      "started": 1789746737.689122,
+      "elapsed_seconds": 0.091
+    }
+  ],
+  "billing_status": "estimated_not_reconciled",
+  "sentences": 7,
+  "speaker_ids": [
+    "0",
+    "1",
+    "2"
+  ],
+  "timestamps_and_speakers_valid": true,
+  "properties": {
+    "audio_format": "pcm_s16le",
+    "channels": [
+      0
+    ],
+    "original_sampling_rate": 16000,
+    "original_duration_in_milliseconds": 32000
+  },
+  "source_unchanged": true,
+  "submission_to_result_seconds": 5.514,
+  "estimated_cny": 0.00506,
+  "unit_price_cny_per_second": 0.00022,
+  "word_count": 70,
+  "word_timestamps_valid": true,
+  "cached_rerun_network_calls": 0,
+  "content_duration_ms": 22520
+}
