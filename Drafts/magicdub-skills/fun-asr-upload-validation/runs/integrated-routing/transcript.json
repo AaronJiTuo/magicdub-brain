@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "segments": [
+    {
+      "source_text": "Your commencement from one of the finest universities in the world. ",
+      "start_ms": 80,
+      "end_ms": 2800,
+      "speaker": "0",
+      "id": "s0000",
+      "target_words": 12,
+      "translated_text": null,
+      "flags": []
+    },
+    {
+      "source_text": "Truth be told. ",
+      "start_ms": 6680,
+      "end_ms": 7720,
+      "speaker": "0",
+      "id": "s0001",
+      "target_words": 5,
+      "translated_text": null,
+      "flags": []
+    },
+    {
+      "source_text": " fellow citizens. ",
+      "start_ms": 8120,
+      "end_ms": 9440,
+      "speaker": "1",
+      "id": "s0002",
+      "target_words": 6,
+      "translated_text": null,
+      "flags": []
+    },
+    {
+      "source_text": "The golden age of America begins right now. ",
+      "start_ms": 10410,
+      "end_ms": 13290,
+      "speaker": "1",
+      "id": "s0003",
+      "target_words": 13,
+      "translated_text": null,
+      "flags": []
+    },
+    {
+      "source_text": "dots. ",
+      "start_ms": 16130,
+      "end_ms": 17050,
+      "speaker": "2",
+      "id": "s0004",
+      "target_words": 4,
+      "translated_text": null,
+      "flags": []
+    },
+    {
+      "source_text": "I dropped out of reed college after the first six months, but then stayed around as a drop-in for another 18.",
+      "start_ms": 18580,
+      "end_ms": 24220,
+      "speaker": "0",
+      "id": "s0005",
+      "target_words": 25,
+      "translated_text": null,
+      "flags": []
+    },
+    {
+      "source_text": " We will be the envy of every nation, and we will not allow ourselves to be taken advantage of any longer. ",
+      "start_ms": 25260,
+      "end_ms": 31860,
+      "speaker": "1",
+      "id": "s0006",
+      "target_words": 30,
+      "translated_text": null,
+      "flags": []
+    }
+  ],
+  "text": "Your commencement from one of the finest universities in the world.  Truth be told.   fellow citizens.  The golden age of America begins right now.  dots.  I dropped out of reed college after the first six months, but then stayed around as a drop-in for another 18.  We will be the envy of every nation, and we will not allow ourselves to be taken advantage of any longer. ",
+  "post_merge": false
+}

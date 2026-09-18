@@ -1,0 +1,55 @@
+{
+  "started_at": "2026-09-17T21:20:25.951213+00:00",
+  "status": "passed",
+  "input_sha256": "df6d7f72173914e90757d66c4185ebcaca2eff432b7ec6217737f60e8465366e",
+  "duration_seconds": 32.0,
+  "runtime": "local-unpublished-source",
+  "source_fun_asr_sha256": "90b3689edb0a6b3b96595c102eb0639e717d990ad4ac1ae3fedc2ecce3a47e1c",
+  "base_type": "workspace-beijing",
+  "parameters": {
+    "diarization_enabled": true,
+    "special_word_filter": "{\"filter_with_signed\": {\"word_list\": [\"肏屄\"]}, \"system_reserved_filter\": false}",
+    "language_hints": [
+      "en"
+    ]
+  },
+  "network": {
+    "upload_policy": 1,
+    "file_upload": 1,
+    "asr_submit": 1,
+    "fal": 0
+  },
+  "processed_audio": {
+    "sha256": "df6d7f72173914e90757d66c4185ebcaca2eff432b7ec6217737f60e8465366e",
+    "sample_rate": 16000,
+    "channels": 1,
+    "subtype": "PCM_16",
+    "decode": "passed"
+  },
+  "upload_policy_http": 200,
+  "file_upload_http": 200,
+  "asr_submit_http": 200,
+  "segment_count": 7,
+  "speakers": [
+    "0",
+    "1",
+    "2"
+  ],
+  "timestamps_valid": true,
+  "cached_result_without_network": true,
+  "source_unchanged": true,
+  "asr_attempt_count": 1,
+  "attempt": {
+    "status": "succeeded",
+    "request_id": "c9541d64-3470-417b-8926-716fdc6a2d23",
+    "usage": {
+      "duration": 21
+    },
+    "submit_http_status": 200,
+    "cost_status": "estimated",
+    "estimated_amount": "0.00462",
+    "currency": "CNY"
+  },
+  "elapsed_seconds": 6.026,
+  "finished_at": "2026-09-17T21:20:31.977296+00:00"
+}

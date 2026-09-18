@@ -1,0 +1,59 @@
+{
+  "started_at": "2026-09-17T20:24:30.151899+00:00",
+  "status": "passed",
+  "source_project": "acceptance_two_speakers",
+  "model": "fun-asr",
+  "parameters": {
+    "diarization_enabled": true,
+    "language_hints": [
+      "en"
+    ]
+  },
+  "fal_calls": 0,
+  "asr_submission_limit": 1,
+  "input_sha256": "df6d7f72173914e90757d66c4185ebcaca2eff432b7ec6217737f60e8465366e",
+  "duration_seconds": 32.0,
+  "bytes": 1024078,
+  "input_decode": "passed",
+  "base": "https://llm-qj28y7tvy8duxrrg.cn-beijing.maas.aliyuncs.com/api/v1",
+  "runtime_fun_asr_sha256": "e2f730b3bf03883ff5e4970b07cd7a0bb37ea4f4c0ed88a0d464bc822926c5a5",
+  "upload_policy_http": 200,
+  "upload_http": 200,
+  "upload_seconds": 0.142,
+  "upload_host": "dashscope-file-mgr.oss-cn-beijing.aliyuncs.com",
+  "recognition_seconds": 5.405,
+  "segment_count": 7,
+  "speakers": [
+    "0",
+    "1",
+    "2"
+  ],
+  "text_characters": 373,
+  "timestamps_valid": true,
+  "all_speakers_present": true,
+  "asr_attempt_count": 1,
+  "asr_attempt": {
+    "status": "succeeded",
+    "request_id": "7d8df730-4b80-4a6c-a5b9-67f68b2da09f",
+    "usage": {
+      "duration": 21
+    },
+    "cost_status": "pending",
+    "estimated_amount": null,
+    "currency": "CNY"
+  },
+  "submission": {
+    "request_id": "41826d19-0db7-97ba-8faa-cbddd12f4e78"
+  },
+  "provider_task_status": "SUCCEEDED",
+  "provider_file_statuses": [
+    {
+      "subtask_status": "SUCCEEDED"
+    }
+  ],
+  "usage": {
+    "duration": 21
+  },
+  "elapsed_seconds_this_run": 5.835,
+  "updated_at": "2026-09-17T20:24:35.987526+00:00"
+}

@@ -3,9 +3,9 @@
   "template_authority": "github.com/AaronJiTuo/brain-template",
   "template_ref": "main",
   "update_channel": "stable",
-  "protocol_version": "2.4.0",
-  "protocol_released_at": "2026-08-23",
-  "protocol_summary": "取消重复确认，将初始化、接手与升级的可选 Star 询问后置并统一为带语境保护的‘确认’口令，正式接手流程 Skill 化",
+  "protocol_version": "2.4.1",
+  "protocol_released_at": "2026-09-14",
+  "protocol_summary": "升级提示与完成后 Star 邀请优先使用当前 agent 的原生选项，支持忽略并绑定明确行动授权",
   "managed_files": [
     ".LICENSE.brain-template",
     ".gitignore",

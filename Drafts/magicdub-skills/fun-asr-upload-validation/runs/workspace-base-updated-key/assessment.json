@@ -1,0 +1,23 @@
+{
+  "technical_availability": "passed",
+  "quality_acceptance": "not_passed_pending_listening",
+  "quality_flags": [
+    "known_two_speaker_sample_returned_three_speaker_ids"
+  ],
+  "text_and_time_validation": "7 nonempty segments; timestamps in bounds; all have speaker_id",
+  "cost_estimate": {
+    "currency": "CNY",
+    "unit_price": "0.00022",
+    "quantity_from_usage": 21,
+    "estimated_amount": "0.00462",
+    "confirmed_amount": null,
+    "basis": "Official Beijing fun-asr list price times provider usage.duration; no invoice reconciliation",
+    "source": "https://help.aliyun.com/zh/model-studio/fun-asr"
+  },
+  "limitations": [
+    "Key and Base URL changed together; cause of old rejection not isolated",
+    "No translation, TTS or rendering in this run",
+    "Production automatic upload remains fal; test supplied Bailian oss URL",
+    "Current production cost estimate excludes workspace-specific host; original attempt remains pending"
+  ]
+}
