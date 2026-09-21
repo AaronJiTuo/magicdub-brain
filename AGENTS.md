@@ -111,7 +111,7 @@
 
 ## 项目专属约束（MagicDub）
 
-- 当前路线（2026-09-13）：取消 `magicdub-cloud`；原 `magicdub` 暂时保留、当前不推进；集中完成主要自用的 `magicdub-skills`。未来确有对外 Web 需求时再决定重启 `magicdub` 或新建仓库，不预建 Web / Cloud 平台。详见 `Releases/00_MagicDub项目总览.md`。
+- 当前路线：`magicdub-skills` 已发布可维护；**`magicdub-cli` 为本地 CLI 新实现线**，系统设计与 v0.1.0 范围见 `Releases/06_magicdub-cli系统设计.md`。原 `magicdub` 暂时保留、当前不推进；`magicdub-cloud` 已取消。未来确有对外 Web 需求时再决定重启 `magicdub` 或新建仓库。详见 `Releases/00_MagicDub项目总览.md`。
 
 - 范围约束：本项目 **永远不做唇形/口型修正**，仅追求「译制片式」音频替换与时间轴对齐体验。
 - 仓库定位：本仓库用于思考与文档沉淀，不承载业务代码与脚手架。

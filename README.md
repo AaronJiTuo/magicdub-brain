@@ -42,11 +42,12 @@
 
 ## 当前方向
 
-2026-09-13 起，MagicDub 集中完成主要自用的 `magicdub-skills`。`magicdub-cloud` 项目取消，原 `magicdub` 暂时保留、当前不推进；未来确有对外 Web 需求时，再决定重启 `magicdub` 或新建仓库。
+2026-09-13 起，MagicDub 以自用 `magicdub-skills` 为主线发布与维护；2026-09-22 起另定本地 CLI 线 `magicdub-cli`（见 [系统设计](Releases/06_magicdub-cli系统设计.md)）。`magicdub-cloud` 已取消，原 `magicdub` 暂时保留、当前不推进；未来确有对外 Web 需求时，再决定重启 `magicdub` 或新建仓库。
 
 ## 项目入口建议
 
 - 首先阅读 [MagicDub 项目总览](Releases/00_MagicDub项目总览.md)，注意其中的方案适用范围。
+- [magicdub-cli](https://github.com/shishengkai/magicdub-cli)：按 [系统设计](Releases/06_magicdub-cli系统设计.md) 第 2 节（v0.1.0）从 M0 实现。
 - [magicdub-skills](https://github.com/shishengkai/magicdub-skills)（原 `magicdub-skill`）按技能集发展。[正式项目规划](Releases/05_magicdub-skill项目规划.md)已于 2026-09-12 统一最新决定：首版为译制、安装配置、升级三个 skill，采用 Python 3.12+ 与自身 API 调用程序；当前先跑通短视频，多音轨 / 多声道高级处理和长片延后；多人、候选模型选择、强制对齐和双币种费用要求见该文。当前实现与验收证据仍以 [CURRENT](.records/CURRENT.md)为准。
 - 再阅读 [CURRENT](.records/CURRENT.md)，了解当前实际状态与文档漂移。
 - 仅在追溯历史 Web 方案时按需阅读 [技术框架](Releases/01_MagicDub技术框架.md)、其他相关 Release 和少量必要 Record；这些方案已停止推进，其云基础设施要求不作为当前 skills 的实现依据。
