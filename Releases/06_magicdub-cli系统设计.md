@@ -44,10 +44,12 @@
 
 | slot | adapter_id | 目录 | 凭据 |
 | --- | --- | --- | --- |
-| sep | `fal/demucs` | `adapters/sep/demucs/` | `FAL_KEY` |
-| asr | `fal/whisper` | `adapters/asr/whisper/` | `FAL_KEY` |
-| translation | `deepseek/deepseek-flash` | `adapters/translation/deepseek_flash/` | `DEEPSEEK_API_KEY` |
+| sep | `fal/demucs` | `adapters/sep/fal_demucs/` | `FAL_KEY` |
+| asr | `fal/whisper` | `adapters/asr/fal_whisper/` | `FAL_KEY` |
+| translation | `deepseek/deepseek-flash` | `adapters/translation/deepseek_deepseek_flash/` | `DEEPSEEK_API_KEY` |
 | tts | `fal/index-tts-2` | `adapters/tts/fal_index_tts_2/` | `FAL_KEY` |
+
+目录名与 `adapter_id` 对应：`vendor/model` → `vendor_model`（`-` 改为 `_`）。例如日后 `openrouter/whisper` → `adapters/asr/openrouter_whisper/`。
 
 ### 2.4 已钉死约定
 
@@ -308,7 +310,7 @@ src/magicdub_cli/
   cli.py, constants.py, pipeline/
   steps/fixed/…  steps/slots/…
   adapters/base.py, registry.py
-  adapters/{sep,asr,translation,tts}/<adapter>/
+  adapters/{sep,asr,translation,tts}/<vendor_model>/
   state/, media/
 ```
 
@@ -360,5 +362,6 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-23_052217_确认凭据文件优先于环境变量.md`
 - `.records/events/2026-09/2026-09-23_055658_增加magicdub_update子命令.md`
 - `.records/events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md`
+- `.records/events/2026-09/2026-09-23_070246_统一adapter目录为vendor_model.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。

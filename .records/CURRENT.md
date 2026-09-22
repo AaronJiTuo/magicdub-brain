@@ -4,6 +4,8 @@
 
 ## 当前阶段
 
+- 2026-09-23：**[Adapter 目录统一为 vendor_model](events/2026-09/2026-09-23_070246_统一adapter目录为vendor_model.md)**。`fal_whisper`／`fal_demucs`／`deepseek_deepseek_flash`；`adapter_id` 不变。
+
 - 2026-09-23：**[v0.1.2：`--version` 显示 magicdub-cli](events/2026-09/2026-09-23_061531_发布v012版本显示magicdub-cli.md)**。`releases/latest` → v0.1.2。
 
 - 2026-09-23：**[magicdub-cli 已 public，安装／更新跟最新正式 Release](events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md)**。v0.1.1（`f3aeeb6`）；`curl …/install.sh | sh` 可用。
