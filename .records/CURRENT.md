@@ -6,6 +6,8 @@
 
 - 2026-09-23：**[发布 magicdub-cli v0.1.3](events/2026-09/2026-09-23_073126_发布magicdub-cli_v013.md)**。`releases/latest` → v0.1.3（`7d25b22`）；配置补齐／adapter 目录整理。
 
+- 2026-09-23：**[配置与凭据改为补齐缺失键](events/2026-09/2026-09-23_070900_配置凭据改为补齐缺失键.md)**。升级补缺失项，保留用户值；已随 v0.1.3 发布。
+
 - 2026-09-23：**[v0.1.2：`--version` 显示 magicdub-cli](events/2026-09/2026-09-23_061531_发布v012版本显示magicdub-cli.md)**。已被 v0.1.3 取代为 latest。
 
 - 2026-09-23：**[magicdub-cli 已 public，安装／更新跟最新正式 Release](events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md)**。v0.1.1（`f3aeeb6`）；`curl …/install.sh | sh` 可用。
