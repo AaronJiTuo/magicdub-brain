@@ -4,13 +4,9 @@
 
 ## 当前阶段
 
-- 2026-09-23：**[配置与凭据改为补齐缺失键](events/2026-09/2026-09-23_070900_配置凭据改为补齐缺失键.md)**。否决「已有不覆盖」；升级时补缺失项，保留用户值。
+- 2026-09-23：**[发布 magicdub-cli v0.1.3](events/2026-09/2026-09-23_073126_发布magicdub-cli_v013.md)**。`releases/latest` → v0.1.3（`7d25b22`）；配置补齐／adapter 目录整理。
 
-- 2026-09-23：**[安装／首次运行写入默认配置与凭据](events/2026-09/2026-09-23_070640_安装时写入默认配置与凭据.md)**。已被上条 supersede（补齐策略）。
-
-- 2026-09-23：**[Adapter 目录统一为 vendor_model](events/2026-09/2026-09-23_070246_统一adapter目录为vendor_model.md)**。`fal_whisper`／`fal_demucs`／`deepseek_deepseek_flash`；`adapter_id` 不变。
-
-- 2026-09-23：**[v0.1.2：`--version` 显示 magicdub-cli](events/2026-09/2026-09-23_061531_发布v012版本显示magicdub-cli.md)**。`releases/latest` → v0.1.2。
+- 2026-09-23：**[v0.1.2：`--version` 显示 magicdub-cli](events/2026-09/2026-09-23_061531_发布v012版本显示magicdub-cli.md)**。已被 v0.1.3 取代为 latest。
 
 - 2026-09-23：**[magicdub-cli 已 public，安装／更新跟最新正式 Release](events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md)**。v0.1.1（`f3aeeb6`）；`curl …/install.sh | sh` 可用。
 
