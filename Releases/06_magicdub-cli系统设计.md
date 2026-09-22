@@ -33,7 +33,7 @@
 | slots | 单 adapter；`run.slots.*.order` 为单元素数组，实现取 `order[0]` |
 | fitting | 合格／重译重 TTS（≤2）／forced 选最接近合格带 |
 | 状态 | 全 schema 写入，未用填 null；`ledger` 逐请求追加 |
-| 配置／凭据 | 安装／首次运行写入 `~/.magicdub/cli/config.yaml` 与 `credentials`（已有不覆盖）；文件优先，缺 key 再读环境变量 |
+| 配置／凭据 | 安装／升级／每次启动确保 `~/.magicdub/cli/config.yaml` 与 `credentials`：缺文件写默认，已有则补齐缺失键（保留用户值；凭据不改写已有 Key）；文件优先，缺 key 再读环境变量 |
 | 锁 | 任务根 `run.lock` 文件 + state 镜像；同机死 pid 清、活则拒；他机只报错 |
 
 ### 2.2 不做
@@ -265,8 +265,8 @@ flowchart TD
 ```text
 ~/.magicdub/
   cli/
-    config.yaml        # 安装／首次运行写入默认；已有不覆盖；缺键用 constants
-    credentials        # 同上；KEY=value；文件优先，缺 key 才用环境变量
+    config.yaml        # 缺则写默认；已有则补齐缺失键（保留用户值）；运行时缺键仍用 constants
+    credentials        # 缺则写默认；已有则追加缺失 KEY=（不改写已有值）；文件优先，缺 key 才用环境变量
   # skills 自用 credentials / credentials.env：本线不读
 ```
 
@@ -364,5 +364,6 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md`
 - `.records/events/2026-09/2026-09-23_070246_统一adapter目录为vendor_model.md`
 - `.records/events/2026-09/2026-09-23_070640_安装时写入默认配置与凭据.md`
+- `.records/events/2026-09/2026-09-23_070900_配置凭据改为补齐缺失键.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。
