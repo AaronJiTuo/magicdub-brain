@@ -4,6 +4,22 @@
 
 ## 当前阶段
 
+- 2026-09-23：**[v0.1.2：`--version` 显示 magicdub-cli](events/2026-09/2026-09-23_061531_发布v012版本显示magicdub-cli.md)**。`releases/latest` → v0.1.2。
+
+- 2026-09-23：**[magicdub-cli 已 public，安装／更新跟最新正式 Release](events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md)**。v0.1.1（`f3aeeb6`）；`curl …/install.sh | sh` 可用。
+
+- 2026-09-23：**[增加 magicdub update](events/2026-09/2026-09-23_055658_增加magicdub_update子命令.md)**。日常升级用子命令；`install.sh` 兼救援。
+
+- 2026-09-23：**[magicdub-cli 增加 uninstall.sh](events/2026-09/2026-09-23_054334_增加magicdub-cli_uninstall脚本.md)**。默认只卸工具；`--purge` 才删 `~/.magicdub/cli`。
+
+- 2026-09-23：**[magicdub-cli 增加 install.sh 一句安装](events/2026-09/2026-09-23_053643_增加magicdub-cli_install脚本.md)**。已 push；仓库仍 private 时用 clone／`gh api`，公开后可用 `curl …/install.sh | sh`（`126a13d`）。
+
+- 2026-09-23：**[凭据改为文件优先，缺 key 再用环境变量](events/2026-09/2026-09-23_052217_确认凭据文件优先于环境变量.md)**。
+
+- 2026-09-23：**[cli 配置／凭据改到 `~/.magicdub/cli/`，与 skills 脱钩](events/2026-09/2026-09-23_044613_确认cli配置凭据分目录与skills脱钩.md)**。只读 `cli/credentials`；不读 skills 凭据文件。本机已迁移；skills 未改。
+
+- 2026-09-23：**[CLI 命令名改为 magicdub](events/2026-09/2026-09-23_035227_确认CLI命令名为magicdub.md)**。仓库／包仍为 `magicdub-cli`；`engine`／配置路径不变；无过渡 alias。规范与本地代码已改。
+
 - 2026-09-22：**[magicdub-cli v0.1.0 端到端验收通过](events/2026-09/2026-09-22_063714_完成magicdub-cli_v010端到端验收.md)**。提交 `c0bf6a8`；Jobs 90s 样片产出 final.mp4/wav/srt；22 句；费用 ¥0.037821。
 
 - 2026-09-22：**[已发布 magicdub-cli 系统设计 Release](events/2026-09/2026-09-22_060842_发布magicdub-cli系统设计Release.md)**。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)（含 v0.1.0）；Draft 已归档。代码仓仅 README，待从 M0 实现。
@@ -87,6 +103,20 @@
 
 ## 最近关键变化
 
+- 2026-09-23：[公开 magicdub-cli 并跟随最新 Release](events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md)：v0.1.1；install／update 默认 `releases/latest`。
+
+- 2026-09-23：[magicdub update 子命令](events/2026-09/2026-09-23_055658_增加magicdub_update子命令.md)：`install.sh` 兼升级／救援；无独立 update.sh。
+
+- 2026-09-23：[magicdub-cli uninstall.sh](events/2026-09/2026-09-23_054334_增加magicdub-cli_uninstall脚本.md)：默认卸工具；`--purge`／`--purge-tasks` 可选。
+
+- 2026-09-23：[magicdub-cli install.sh 一句安装](events/2026-09/2026-09-23_053643_增加magicdub-cli_install脚本.md)：已 push；补齐 uv／ffmpeg 后安装 `magicdub`。
+
+- 2026-09-23：[凭据文件优先于环境变量](events/2026-09/2026-09-23_052217_确认凭据文件优先于环境变量.md)：`cli/credentials` 有值则用文件，否则补 env。
+
+- 2026-09-23：[cli 配置／凭据分目录与 skills 脱钩](events/2026-09/2026-09-23_044613_确认cli配置凭据分目录与skills脱钩.md)：`~/.magicdub/cli/{config.yaml,credentials}`；不再回落 skills 凭据。
+
+- 2026-09-23：[CLI 命令名改为 magicdub](events/2026-09/2026-09-23_035227_确认CLI命令名为magicdub.md)：规范与本地 `magicdub-cli` 代码入口已切；包名／engine／路径不变。
+
 - 2026-09-22：[发布 magicdub-cli 系统设计 Release](events/2026-09/2026-09-22_060842_发布magicdub-cli系统设计Release.md)：`Releases/06` 含 v0.1.0；六份 Draft 归档；未另发开发文档。
 
 - 2026-09-22：[确认 v0.1.0 不做续跑并钉死实现约定](events/2026-09/2026-09-22_060500_确认v010不做续跑并钉死实现约定.md)：全新任务快乐路径；锁文件、配置空列表、批策略、空句／零窗口失败等写入计划。
@@ -95,7 +125,7 @@
 
 - 2026-09-22：[确认 magicdub-cli 翻译同一入口与 history 契约](events/2026-09/2026-09-22_055702_确认magicdub-cli翻译同一入口与history契约.md)：用户确认不拆首译／修正函数；契约写入 pipeline、流程图与 v0.1.0 M4。同期 Draft 含完整 pipeline／state／路径／v0.1.0 范围；空仓库已建，实现待明确开工。
 
-- 2026-09-19：[MVSep 固定区域已按用户要求改为 DE2](events/2026-09/2026-09-19_030126_按用户要求将MVSep固定区域切换为DE2.md)：本地源码的模型地址、创建、轮询、历史对账与下载校验统一到 DE2。31 项专项、Ruff、开发模块与 53 文件摘要校验通过；无新增 API 请求或费用，现已随 v0.6.1 提交、推送并正式发布，日常安装未切换。已有香港项目保留原快照；此前香港地址合法性的核查作为历史依据保留。
+- 2026-09-19：[MVSep 固定区域已按用户要求改为 DE2](events/2026-09/2026-09-19_030126_按用户要求将MVSep固定区域切换为DE2.md)：本地源码的模型地址、创建、轮询、历史对账与下载校验统一到 DE2。31 项专项、Ruff、开发模块与 53 文件摘要校验通过；无新增远端请求或费用，现已随 v0.6.1 提交、推送并正式发布，日常安装未切换。已有香港项目保留原快照；此前香港地址合法性的核查作为历史依据保留。
 
 - 2026-09-19：**[OpenRouter Fish 两个入口已完成实测](events/2026-09/2026-09-19_020647_验证OpenRouterFish双模型逐句克隆与官方接口差异.md)**。核心单参考逐句克隆 12/12 成功，含三种不足 0.5 秒参考；共 30 请求、24 生成、6 预设边界 400。多参考、直接 WAV 与部分高级参数不等价于官方；42 份试听媒体解码与浏览器加载通过，平台用量 $0.013785／折算 ¥0.096495 已核对。现已[接入本地 skills](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)，现已随 v0.6.1 发布；听感、并发和全长质量待验收。
 
@@ -146,7 +176,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：系统设计已 Release；按 [Releases/06](../Releases/06_magicdub-cli系统设计.md) 第 2 节从 M0 写代码（需明确开工）。本地仓已有 README，尚未 push。见 [发布记录](events/2026-09/2026-09-22_060842_发布magicdub-cli系统设计Release.md)。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.1.1）。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 

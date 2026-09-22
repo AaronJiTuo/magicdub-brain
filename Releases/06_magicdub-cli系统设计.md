@@ -10,8 +10,8 @@
 
 | 项 | 决定 |
 | --- | --- |
-| 形态 | 本地命令行：`magicdub-cli`；用 `uv tool install` 安装，不放在配置目录下 |
-| 与 skills | 共用 `~/.magicdub/credentials`；配置在 `~/.magicdub/cli/`；任务在 `…/MagicDub/cli/`，**不**打开 skills 的 `project.json` |
+| 形态 | 本地命令行：`magicdub`；仓库／包名仍为 `magicdub-cli`；用 `uv tool install` 安装，不放在配置目录下 |
+| 与 skills | 配置／凭据均在 `~/.magicdub/cli/`（与 skills 分文件）；任务在 `…/MagicDub/cli/`，**不**打开 skills 的 `project.json`；本线不读 skills 凭据文件 |
 | 架构 | **编排式 pipeline**：fixed step 与 slot（可挂 adapter）由 pipeline 调度；step 互不调用；adapter 不写状态、不碰正式路径 |
 | 产出 | 配音成片 MP4、混音母版 WAV、SRT；人民币费用 ledger + 汇总 |
 | 非目标 | 口型修正、下载上游（首版）、Web／Cloud |
@@ -26,14 +26,14 @@
 
 | 项 | 约定 |
 | --- | --- |
-| CLI | `magicdub-cli run <video> --src <lang> --tgt <lang>`；缺参直接报错，无交互 |
+| CLI | `magicdub run …`；`magicdub update` 默认装 **最新正式 GitHub Release**（可用 `--ref`／`MAGICDUB_REF` 覆盖）；缺参直接报错，无交互 |
 | 任务 | 每次 `run` **只新建并跑完一个任务目录**；不打开已有目录、不续跑、不跳过步骤 |
 | pipeline | 串行；本进程内按 assets 键推进句级；失败即停 |
 | fixed | demux、clipping、duration_fitting、alignment、mixing |
 | slots | 单 adapter；`run.slots.*.order` 为单元素数组，实现取 `order[0]` |
 | fitting | 合格／重译重 TTS（≤2）／forced 选最接近合格带 |
 | 状态 | 全 schema 写入，未用填 null；`ledger` 逐请求追加 |
-| 配置／凭据 | `~/.magicdub/cli/config.yaml`（可缺）、`~/.magicdub/credentials`、环境变量覆盖 |
+| 配置／凭据 | `~/.magicdub/cli/config.yaml`（可缺）、`~/.magicdub/cli/credentials`（优先）；缺 key 时再读环境变量 |
 | 锁 | 任务根 `run.lock` 文件 + state 镜像；同机死 pid 清、活则拒；他机只报错 |
 
 ### 2.2 不做
@@ -66,7 +66,7 @@
 
 | # | 内容 | 验收要点 |
 | --- | --- | --- |
-| M0 | 骨架 | `uv tool install .` → `--version`；目录树；ruff |
+| M0 | 骨架 | `uv tool install .` → `magicdub --version`；目录树；ruff |
 | M1 | 状态与路径 | state 原子写、file_ref、commit、任务目录、ULID、run.lock、配置语义 |
 | M2 | start + demux | video／audio.wav／silent_video.mp4 |
 | M3 | sep + asr | speech／non_speech；sentences；空句失败 |
@@ -262,8 +262,10 @@ flowchart TD
 
 ```text
 ~/.magicdub/
-  cli/config.yaml
-  credentials          # KEY=value；环境变量优先
+  cli/
+    config.yaml        # 可选；缺键用 constants
+    credentials        # KEY=value；仅 cli；文件优先，缺 key 才用环境变量
+  # skills 自用 credentials / credentials.env：本线不读
 ```
 
 `config.yaml`（缺键用 constants；空 slots 列表报错）：
@@ -353,5 +355,10 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-22_055702_确认magicdub-cli翻译同一入口与history契约.md`
 - `.records/events/2026-09/2026-09-22_055908_审查结论magicdub-cli设计足以开工v010.md`
 - `.records/events/2026-09/2026-09-22_060500_确认v010不做续跑并钉死实现约定.md`
+- `.records/events/2026-09/2026-09-23_035227_确认CLI命令名为magicdub.md`
+- `.records/events/2026-09/2026-09-23_044613_确认cli配置凭据分目录与skills脱钩.md`
+- `.records/events/2026-09/2026-09-23_052217_确认凭据文件优先于环境变量.md`
+- `.records/events/2026-09/2026-09-23_055658_增加magicdub_update子命令.md`
+- `.records/events/2026-09/2026-09-23_060238_公开magicdub-cli并跟随最新Release.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。
