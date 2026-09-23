@@ -4,6 +4,8 @@
 
 ## 当前阶段
 
+- 2026-09-23：**[返工费用归 translation／tts](events/2026-09/2026-09-23_080643_确认返工费用归translation与tts.md)**。`duration_fitting` 无模型费；规范已改。**漂移：** v0.1.3 仍把 attempt≥2 记入 `cost_of_duration_fitting`。
+
 - 2026-09-23：**[发布 magicdub-cli v0.1.3](events/2026-09/2026-09-23_073126_发布magicdub-cli_v013.md)**。`releases/latest` → v0.1.3（`7d25b22`）；配置补齐／adapter 目录整理。
 
 - 2026-09-23：**[配置与凭据改为补齐缺失键](events/2026-09/2026-09-23_070900_配置凭据改为补齐缺失键.md)**。升级补缺失项，保留用户值；已随 v0.1.3 发布。
