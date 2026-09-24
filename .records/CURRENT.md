@@ -206,7 +206,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.1.1）。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.2）。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 
