@@ -106,7 +106,7 @@ CLI → pipeline → fixed:* | slot:* → adapter(s)
 2. adapter 只 return；slot 负责 commit 正式路径并写 assets／ledger。  
 3. 状态只存相对任务根的 path + sha256 + size_bytes 与标量；费用 CNY，精度 `0.00000001`。  
 4. step 名：业务名原样（`demux`／`sep`／`asr`／`translation`／`tts`）；自拟用名词（`clipping`／`duration_fitting`／`alignment`／`mixing`）。  
-5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：本地 `wave` 时长秒 **ceil** × 公开单价 × 汇率）。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。
+5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：生成音频时长秒用 `wave`（非 wav 则 `ffprobe`）量测后 **ceil** × **$0.002** × 汇率 **7**；fal Whisper：queue status 的 `metrics.inference_time`（否则结果头 `x-fal-raw-time`）**ceil** × **$0.0008** × 汇率 **7**——Usage 偶发 `$0.00125` 待供应商澄清前按 Pricing API 的 0.0008 估算；fal Demucs：输入音频时长秒 **ceil** × **$0.0007** × 汇率 **7**）。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。
 
 step 对 pipeline 的 return：`ok`、可选 `error_code`／`message`；slot 成功时带 `adapter_id`（入 ledger，不入句级 assets）。失败不得留下半套已提交字段。
 
@@ -393,5 +393,10 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-24_120612_同轮先全部TTS再duration_fitting.md`
 - `.records/events/2026-09/2026-09-24_120824_发布magicdub-cli_v021.md`
 - `.records/events/2026-09/2026-09-24_180406_确认adapter必须输出cost_cny.md`
+- `.records/events/2026-09/2026-09-24_181058_IndexTTS2本地计费接入slot费用桶.md`
+- `.records/events/2026-09/2026-09-24_190326_falWhisper按0008估算cost_cny.md`
+- `.records/events/2026-09/2026-09-24_190611_falDemucs按0007音频秒估算cost_cny.md`
+- `.records/events/2026-09/2026-09-24_191100_Demucs账单quantity等于ceil音频秒.md`
+- `.records/events/2026-09/2026-09-24_191310_发布magicdub-cli_v022.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。

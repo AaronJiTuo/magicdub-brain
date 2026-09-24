@@ -4,7 +4,19 @@
 
 ## 当前阶段
 
-- 2026-09-24：**[确认 adapter 必须输出 cost_cny](events/2026-09/2026-09-24_180406_确认adapter必须输出cost_cny.md)**。费用估算留在 adapter；slot 只消费。**漂移：** fal adapter 仍常返回 null。
+- 2026-09-24：**[发布 magicdub-cli v0.2.2](events/2026-09/2026-09-24_191310_发布magicdub-cli_v022.md)**。`releases/latest` → v0.2.2（`c2b8eb0`）。fal 三 adapter 本地 `cost_cny`。
+
+- 2026-09-24：**[Demucs 账单 quantity=ceil(音频秒)](events/2026-09/2026-09-24_191100_Demucs账单quantity等于ceil音频秒.md)**。Admin 对照：5.25s→qty 6；历史 ≈66.25s→qty 67。与 adapter 估算一致。
+
+- 2026-09-24：**[fal Demucs 按 $0.0007／音频秒估算](events/2026-09/2026-09-24_190611_falDemucs按0007音频秒估算cost_cny.md)**。已随 v0.2.2 发布。
+
+- 2026-09-24：**[fal Whisper 按 $0.0008 估算 cost_cny](events/2026-09/2026-09-24_190326_falWhisper按0008估算cost_cny.md)**。已随 v0.2.2 发布；偶发 0.00125 待客服。
+
+- 2026-09-24：**[fal Whisper 结果无 compute seconds](events/2026-09/2026-09-24_183138_falWhisper结果无compute秒用inference_time.md)**。用量在 `status.metrics.inference_time`。
+
+- 2026-09-24：**[IndexTTS2 本地计费并接入 slot 费用桶](events/2026-09/2026-09-24_181058_IndexTTS2本地计费接入slot费用桶.md)**。已随 v0.2.2 发布。
+
+- 2026-09-24：**[确认 adapter 必须输出 cost_cny](events/2026-09/2026-09-24_180406_确认adapter必须输出cost_cny.md)**。费用估算留在 adapter；slot 只消费。IndexTTS2 已实现；sep／asr 仍可能 null。
 
 - 2026-09-24：**[发布 magicdub-cli v0.2.1](events/2026-09/2026-09-24_120824_发布magicdub-cli_v021.md)**。`releases/latest` → v0.2.1（`9b11952`）。
 

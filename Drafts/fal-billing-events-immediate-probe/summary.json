@@ -1,0 +1,20 @@
+{
+  "sentences_tested": 22,
+  "immediate_hits": 0,
+  "eventual_hits": 10,
+  "first_hit_delays_s": [
+    10.001,
+    4.311,
+    5.583,
+    10.0,
+    6.427,
+    10.003,
+    4.998,
+    10.005,
+    4.299,
+    10.01
+  ],
+  "avg_first_hit_delay_s": 7.564,
+  "max_first_hit_delay_s": 10.01,
+  "never_found": 12
+}

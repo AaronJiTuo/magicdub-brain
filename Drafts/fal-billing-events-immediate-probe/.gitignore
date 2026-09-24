@@ -1,0 +1,7 @@
+results.jsonl
+SUMMARY.md
+*.key
+.env
+tmp_tts/
+__pycache__/
+*.pyc
