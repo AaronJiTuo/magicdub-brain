@@ -391,5 +391,7 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-24_113736_落地轮次批处理fitting调度.md`
 - `.records/events/2026-09/2026-09-24_114318_发布magicdub-cli_v020.md`
 - `.records/events/2026-09/2026-09-24_120612_同轮先全部TTS再duration_fitting.md`
+- `.records/events/2026-09/2026-09-24_120824_发布magicdub-cli_v021.md`
+- `.records/events/2026-09/2026-09-24_180406_确认adapter必须输出cost_cny.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。
