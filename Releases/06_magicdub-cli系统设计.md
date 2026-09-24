@@ -61,7 +61,8 @@
 | tts | 逐句串行（同轮内） |
 | 句级并行 | **不做**（TTS／alignment／测时长·算 ratio·标 selection 均串行）；`concurrency` 读入但不生效；以后版本再议 |
 | 语速启发式 | **不**在程序中写入「每秒 N 字」等语言相关常数；时长以 TTS 实测 `fitting_ratio` 为准 |
-| 费用归属 | 凡 translation／TTS 的 API 费分别计入 `cost_of_translation`／`cost_of_tts`（含各轮返工）；**无** `cost_of_duration_fitting` 字段；`duration_fitting` step 仅本地测时长／算 ratio，无模型费用 |
+| 费用归属 | 凡 translation／TTS／sep／asr 的 API 费分别计入对应 `cost_of_*`（含各轮返工）；**无** `cost_of_duration_fitting`；`duration_fitting` 无模型费用 |
+| adapter 费用 | **每个 adapter 成功 return 必须带本次 `cost_cny`（人民币）**；计费算法留在 adapter 内（按供应商公开定价／用量估算）；**禁止**把 fal Platform billing-events 等供应商账单查询上移到 slot／pipeline。slot 只消费 `cost_cny` 写入 ledger 与 `assets.cost`；未知时才允许 `null`（应尽量避免） |
 | 窗口 ≤ 0 或 ASR 空文本／0 句 | `input_invalid`，失败 |
 | 对齐容差 | ≤ 1 ms |
 | `speaker_id` | 文本 |
@@ -97,14 +98,15 @@ CLI → pipeline → fixed:* | slot:* → adapter(s)
 | --- | --- |
 | pipeline | 选下一步、分支／循环、更新编排态；不做 demux／API |
 | fixed／slot | 读 input → 执行 → 校验 → **写 assets** → return；**禁止调用其他 step** |
-| adapter | 收规范化输入；只写 `tmp/<step>/`；return 文件引用；**不写 state、不碰正式路径** |
+| adapter | 收规范化输入；只写 `tmp/<step>/`；return 产物引用与 **`cost_cny`**；**不写 state、不碰正式路径**；费用估算自包含，不依赖 slot／pipeline 再调供应商账单 API |
 
 硬规则：
 
 1. step 互不调用；下一步只由 pipeline 决定。  
 2. adapter 只 return；slot 负责 commit 正式路径并写 assets／ledger。  
 3. 状态只存相对任务根的 path + sha256 + size_bytes 与标量；费用 CNY，精度 `0.00000001`。  
-4. step 名：业务名原样（`demux`／`sep`／`asr`／`translation`／`tts`）；自拟用名词（`clipping`／`duration_fitting`／`alignment`／`mixing`）。
+4. step 名：业务名原样（`demux`／`sep`／`asr`／`translation`／`tts`）；自拟用名词（`clipping`／`duration_fitting`／`alignment`／`mixing`）。  
+5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：本地 `wave` 时长秒 **ceil** × 公开单价 × 汇率）。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。
 
 step 对 pipeline 的 return：`ok`、可选 `error_code`／`message`；slot 成功时带 `adapter_id`（入 ledger，不入句级 assets）。失败不得留下半套已提交字段。
 
@@ -270,7 +272,7 @@ flowchart TD
 
 ### 6.4 `ledger`
 
-每次外部请求追加（含失败）：`id`、`at`、`step`、`sentence_id`、`attempt`、`adapter_id`、`ok`、`error_code`、`cost_cny`（未知保持 null）、`message`。fixed 无 API 费用可不入账。
+每次外部请求追加（含失败）：`id`、`at`、`step`、`sentence_id`、`attempt`、`adapter_id`、`ok`、`error_code`、`cost_cny`（来自 adapter return；未知保持 null）、`message`。fixed 无 API 费用可不入账。slot 在 adapter 成功且 `cost_cny is not None` 时累加对应 `cost_of_*`。
 
 写入顺序：tmp → 校验移正式路径 → assets → ledger／重算 cost → 更新 run → 失败不提交半套正式 path。
 

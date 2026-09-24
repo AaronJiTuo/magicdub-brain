@@ -4,7 +4,9 @@
 
 ## 当前阶段
 
-- 2026-09-24：**[发布 magicdub-cli v0.2.1](events/2026-09/2026-09-24_120824_发布magicdub-cli_v021.md)**。`releases/latest` → v0.2.1（`9b11952`）；同轮先 TTS 后 fitting。
+- 2026-09-24：**[确认 adapter 必须输出 cost_cny](events/2026-09/2026-09-24_180406_确认adapter必须输出cost_cny.md)**。费用估算留在 adapter；slot 只消费。**漂移：** fal adapter 仍常返回 null。
+
+- 2026-09-24：**[发布 magicdub-cli v0.2.1](events/2026-09/2026-09-24_120824_发布magicdub-cli_v021.md)**。`releases/latest` → v0.2.1（`9b11952`）。
 
 - 2026-09-24：**[同轮先全部 TTS 再 duration_fitting](events/2026-09/2026-09-24_120612_同轮先全部TTS再duration_fitting.md)**。已随 v0.2.1 发布。
 
