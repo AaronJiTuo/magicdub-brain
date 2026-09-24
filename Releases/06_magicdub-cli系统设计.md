@@ -60,7 +60,7 @@
 | translation 批 | 首译一次全句 `history=[]`；修正一次当前全部不合格句 + history |
 | tts | 逐句串行 |
 | 句级并行 | **不做**（TTS／alignment／测时长·算 ratio·标 selection 均串行）；`concurrency` 读入但不生效；以后版本再议 |
-| 费用归属 | 凡 translation／TTS 的 API 费分别计入 `cost_of_translation`／`cost_of_tts`（含各轮返工）；`duration_fitting` 仅本地测时长／算 ratio／供 pipeline 标 selection，**无模型费用**；`cost_of_duration_fitting.*` 恒为 0（兼容字段，不再承接返工费） |
+| 费用归属 | 凡 translation／TTS 的 API 费分别计入 `cost_of_translation`／`cost_of_tts`（含各轮返工）；**无** `cost_of_duration_fitting` 字段；`duration_fitting` step 仅本地测时长／算 ratio，无模型费用 |
 | 窗口 ≤ 0 或 ASR 空文本／0 句 | `input_invalid`，失败 |
 | 对齐容差 | ≤ 1 ms |
 | `speaker_id` | 文本 |
@@ -191,20 +191,20 @@ flowchart TD
 
 **同一 `translate` 入口**；不拆首译／修正。必带 `src.transcript`。句级负载：`id`、`src_text`、`target_duration_ms`、`attempt`、`history[]`（空=首译；非空=修正，含 text／tts_duration_ms／fitting_ratio）。返回 `[{id, text}]`。
 
-费用：凡本 step 的 API 费一律计入 `cost_of_translation`（含各 attempt／返工轮）；不写入 `cost_of_duration_fitting`。
+费用：凡本 step 的 API 费一律计入 `cost_of_translation`（含各 attempt／返工轮）。
 
 ### 5.7 slot:tts
 
 - 入：句 `src.audio`／`src.text`、当前 attempt 的 `text`  
 - 出：`tgt[attempt].audio`  
 - IndexTTS：有效非静音参考 < 0.5 s 时尾补静音至 0.6 s  
-- 费用：凡本 step 的 API 费一律计入 `cost_of_tts`（含各 attempt／返工轮）；不写入 `cost_of_duration_fitting`
+- 费用：凡本 step 的 API 费一律计入 `cost_of_tts`（含各 attempt／返工轮）
 
 ### 5.8 fixed:duration_fitting
 
 - 入：当前 attempt `audio`、`src.audio_duration`  
 - 出：`audio_duration`（探测）、`fitting_ratio`；**不写** selection／selected_attempt  
-- **无外部 API、无模型费用**；本地测时长与算 ratio 后由 pipeline 标 selection。不合格句进入下一轮 **translation**（再 TTS），费用走 translation／tts 桶，不记入本 step
+- **无外部 API、无模型费用**；本地测时长与算 ratio 后由 pipeline 标 selection。不合格句进入下一轮 **translation**（再 TTS），费用走 translation／tts 桶
 
 ### 5.9 fixed:alignment
 
@@ -249,7 +249,7 @@ flowchart TD
 - `src`：language、video、audio、silent_video、speech、non_speech、transcript  
 - `sentences[]`：id、start_ms、end_ms、speaker_id、selected_attempt；`src{text,audio,audio_duration}`；`tgt[]{attempt,text,audio,audio_duration,fitting_ratio,selection,aligned_audio}`  
 - `tgt`：language、final_video、final_audio、srt  
-- `cost`：sep／asr／translation／tts／duration_fitting.{translation,tts}（**恒 0，兼容保留**）／**total**（ledger 汇总；返工费计入 translation／tts，不进 duration_fitting）
+- `cost`：sep／asr／translation／tts／**total**（ledger 汇总；返工费计入 translation／tts；**无** duration_fitting 费用项）
 
 `selection`：`fitting_pass|forced|rejected`；每句非 rejected 至多一条；只由 pipeline 写。实际 adapter 只记 ledger。
 
@@ -369,5 +369,7 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-23_070640_安装时写入默认配置与凭据.md`
 - `.records/events/2026-09/2026-09-23_070900_配置凭据改为补齐缺失键.md`
 - `.records/events/2026-09/2026-09-23_080643_确认返工费用归translation与tts.md`
+- `.records/events/2026-09/2026-09-24_112848_暂不做TTS与alignment并行.md`
+- `.records/events/2026-09/2026-09-24_113029_删除cost_of_duration_fitting费用项.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。
