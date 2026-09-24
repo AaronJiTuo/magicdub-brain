@@ -4,6 +4,8 @@
 
 ## 当前阶段
 
+- 2026-09-24：**[暂不做 TTS／alignment／测时长并行](events/2026-09/2026-09-24_112848_暂不做TTS与alignment并行.md)**。近端改进不含句级并行；以后版本再议。
+
 - 2026-09-23：**[返工费用归 translation／tts](events/2026-09/2026-09-23_080643_确认返工费用归translation与tts.md)**。`duration_fitting` 无模型费；规范已改。**漂移：** v0.1.3 仍把 attempt≥2 记入 `cost_of_duration_fitting`。
 
 - 2026-09-23：**[发布 magicdub-cli v0.1.3](events/2026-09/2026-09-23_073126_发布magicdub-cli_v013.md)**。`releases/latest` → v0.1.3（`7d25b22`）；配置补齐／adapter 目录整理。

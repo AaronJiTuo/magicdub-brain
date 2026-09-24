@@ -59,6 +59,7 @@
 | `slots.<name>: []` | **报错** |
 | translation 批 | 首译一次全句 `history=[]`；修正一次当前全部不合格句 + history |
 | tts | 逐句串行 |
+| 句级并行 | **不做**（TTS／alignment／测时长·算 ratio·标 selection 均串行）；`concurrency` 读入但不生效；以后版本再议 |
 | 费用归属 | 凡 translation／TTS 的 API 费分别计入 `cost_of_translation`／`cost_of_tts`（含各轮返工）；`duration_fitting` 仅本地测时长／算 ratio／供 pipeline 标 selection，**无模型费用**；`cost_of_duration_fitting.*` 恒为 0（兼容字段，不再承接返工费） |
 | 窗口 ≤ 0 或 ASR 空文本／0 句 | `input_invalid`，失败 |
 | 对齐容差 | ≤ 1 ms |
