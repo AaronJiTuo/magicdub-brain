@@ -4,7 +4,9 @@
 
 ## 当前阶段
 
-- 2026-09-24：**[删除 cost_of_duration_fitting 费用项](events/2026-09/2026-09-24_113029_删除cost_of_duration_fitting费用项.md)**。返工费只进 translation／tts；规范与代码已改，未发版。
+- 2026-09-24：**[落地轮次批处理 fitting 调度](events/2026-09/2026-09-24_113736_落地轮次批处理fitting调度.md)**。串行轮次批译；分轮提示；无 4.5 字／秒。代码已推 main，未发版。
+
+- 2026-09-24：**[删除 cost_of_duration_fitting 费用项](events/2026-09/2026-09-24_113029_删除cost_of_duration_fitting费用项.md)**。返工费只进 translation／tts。
 
 - 2026-09-24：**[暂不做 TTS／alignment／测时长并行](events/2026-09/2026-09-24_112848_暂不做TTS与alignment并行.md)**。近端改进不含句级并行；以后版本再议。
 

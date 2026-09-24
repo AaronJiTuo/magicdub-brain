@@ -57,9 +57,10 @@
 | --- | --- |
 | 配置缺键 | `constants.py` |
 | `slots.<name>: []` | **报错** |
-| translation 批 | 首译一次全句 `history=[]`；修正一次当前全部不合格句 + history |
-| tts | 逐句串行 |
+| translation 批 | 首译一次全句 `history=[]`；其后每轮对**当前全部不合格句**一批修正 + history；至多 `1+max_rewrites` 次 translation API |
+| tts | 逐句串行（同轮内） |
 | 句级并行 | **不做**（TTS／alignment／测时长·算 ratio·标 selection 均串行）；`concurrency` 读入但不生效；以后版本再议 |
+| 语速启发式 | **不**在程序中写入「每秒 N 字」等语言相关常数；时长以 TTS 实测 `fitting_ratio` 为准 |
 | 费用归属 | 凡 translation／TTS 的 API 费分别计入 `cost_of_translation`／`cost_of_tts`（含各轮返工）；**无** `cost_of_duration_fitting` 字段；`duration_fitting` step 仅本地测时长／算 ratio，无模型费用 |
 | 窗口 ≤ 0 或 ASR 空文本／0 句 | `input_invalid`，失败 |
 | 对齐容差 | ≤ 1 ms |
@@ -111,24 +112,37 @@ step 对 pipeline 的 return：`ok`、可选 `error_code`／`message`；slot 成
 
 ## 4. 控制流
 
-主链（v0.1.0 串行）：
+主链（串行；fitting 为**轮次批处理**）：
 
 ```text
-start → demux → sep → asr → clipping → translation → tts → duration_fitting
-  →（按句分支）→ alignment →（全部句对齐后）→ mixing → finish
+start → demux → sep → asr → clipping
+  → translation(attempt=1, 全句)
+  → for attempt = 1 .. 1+max_rewrites:
+        对尚未选定的、已有该 attempt 译文的句子（串行）：
+          tts → duration_fitting → 标 selection（pass／rejected）
+        若仍有未选定且 attempt 未到上限：
+          translation(attempt+1, 全部 rejected + history)
+        若仍有未选定且已到上限：
+          各句 forced 选最接近合格带的 attempt
+  → 对全部句子串行 alignment
+  → mixing → finish
 ```
 
-### 4.1 duration_fitting 之后（按句，pipeline 拥有）
+同轮内 TTS／duration_fitting／selection／alignment **均串行**；不做句级并行。
 
-合格带默认 `[0.8, 1.2]`（含边界），创建任务时冻结到 `run.fitting`。attempt 最大 = `1 + max_rewrites`（出厂 max_rewrites=2）。
+### 4.1 duration_fitting 之后（按轮，pipeline 拥有）
+
+合格带默认 `[0.8, 1.2]`（含边界），创建任务时冻结到 `run.fitting`。attempt 最大 = `1 + max_rewrites`（出厂 max_rewrites=2）→ 翻译 API 至多约 3 次（首译 + 最多两次整批修正）。
 
 | 条件 | 动作 |
 | --- | --- |
-| ratio 在合格带内 | `selection=fitting_pass`，`selected_attempt=当前` → alignment |
-| 不合格且次数未到 | 当前 `rejected` → translation（新 attempt，仅不合格句 + history + 全文 transcript）→ tts → duration_fitting |
-| 不合格且次数已到 | 在**全部** attempt 中选最接近合格带者 → `forced`；其余 `rejected` → alignment |
+| ratio 在合格带内 | `selection=fitting_pass`，`selected_attempt=当前`；本句退出后续轮 |
+| 不合格且轮次未到 | 当前 attempt `rejected`；本轮结束后对**全部**未选定句一批 translation（+ history）→ 下一轮 TTS |
+| 不合格且轮次已到 | 在该句**全部** attempt 中选最接近合格带者 → `forced`；其余 attempt `rejected`；之后统一 alignment |
 
 距离：`< lo` → `lo - ratio`；`> hi` → `ratio - hi`。同距取 `|ratio - 1|` 更小；再同取 **attempt 编号更小**。
+
+`duration_fitting` 只写 `audio_duration`／`fitting_ratio`；selection 由 pipeline 写。无模型费用。
 
 ### 4.2 句级与失败
 
@@ -142,14 +156,17 @@ start → demux → sep → asr → clipping → translation → tts → duratio
 flowchart TD
   start(((start))) --> demux([demux]) --> sep([sep]) --> asr([asr])
   asr --> clipping([clipping])
-  asr --> translation([translation])
-  clipping --> tts([tts])
-  translation --> tts
+  clipping --> tr1([translation batch])
+  tr1 --> tts([tts serial per sentence])
   tts --> fitting([duration_fitting])
-  fitting --> sw{ratio 合格?}
-  sw -->|是| align([alignment])
-  sw -->|否 次数未到| translation
-  sw -->|否 次数已到| align
+  fitting --> sel{mark selection}
+  sel -->|pass| more{more unsettled?}
+  sel -->|rejected and rounds left| trN([translation batch rejected])
+  trN --> tts
+  sel -->|rejected and last round| forced([forced select])
+  forced --> more
+  more -->|yes unsettled in round| tts
+  more -->|all selected| align([alignment serial])
   align --> mix([mixing]) --> finish(((finish)))
 ```
 
@@ -189,7 +206,7 @@ flowchart TD
 
 ### 5.6 slot:translation
 
-**同一 `translate` 入口**；不拆首译／修正。必带 `src.transcript`。句级负载：`id`、`src_text`、`target_duration_ms`、`attempt`、`history[]`（空=首译；非空=修正，含 text／tts_duration_ms／fitting_ratio）。返回 `[{id, text}]`。
+**同一 `translate` 入口**；不拆首译／修正。必带 `src.transcript`。句级负载：`id`、`src_text`、`target_duration_ms`、`attempt`、`history[]`（空=首译；非空=修正，含 text／tts_duration_ms／fitting_ratio）。返回 `[{id, text}]`。提示词按 history 空／非空切换 initial／revise_timing；修正批强调按实测时长缩短或加长，**不**使用固定字／秒公式。
 
 费用：凡本 step 的 API 费一律计入 `cost_of_translation`（含各 attempt／返工轮）。
 
@@ -371,5 +388,6 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-23_080643_确认返工费用归translation与tts.md`
 - `.records/events/2026-09/2026-09-24_112848_暂不做TTS与alignment并行.md`
 - `.records/events/2026-09/2026-09-24_113029_删除cost_of_duration_fitting费用项.md`
+- `.records/events/2026-09/2026-09-24_113736_落地轮次批处理fitting调度.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。
