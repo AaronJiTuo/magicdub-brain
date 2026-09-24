@@ -28,10 +28,10 @@
 | --- | --- |
 | CLI | `magicdub run …`；`magicdub update` 默认装 **最新正式 GitHub Release**（可用 `--ref`／`MAGICDUB_REF` 覆盖）；缺参直接报错，无交互 |
 | 任务 | 每次 `run` **只新建并跑完一个任务目录**；不打开已有目录、不续跑、不跳过步骤 |
-| pipeline | 串行；本进程内按 assets 键推进句级；失败即停 |
+| pipeline | 串行；fitting 为**轮次批处理**（非整句链内嵌重译）；失败即停 |
 | fixed | demux、clipping、duration_fitting、alignment、mixing |
 | slots | 单 adapter；`run.slots.*.order` 为单元素数组，实现取 `order[0]` |
-| fitting | 合格／重译重 TTS（≤2）／forced 选最接近合格带 |
+| fitting | 首译全句一批；不合格整批再译（≤ max_rewrites）；同轮 TTS／测时长串行；合格／forced；全部选完后再串行 alignment |
 | 状态 | 全 schema 写入，未用填 null；`ledger` 逐请求追加 |
 | 配置／凭据 | 安装／升级／每次启动确保 `~/.magicdub/cli/config.yaml` 与 `credentials`：缺文件写默认，已有则补齐缺失键（保留用户值；凭据不改写已有 Key）；文件优先，缺 key 再读环境变量 |
 | 锁 | 任务根 `run.lock` 文件 + state 镜像；同机死 pid 清、活则拒；他机只报错 |
