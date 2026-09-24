@@ -4,7 +4,9 @@
 
 ## 当前阶段
 
-- 2026-09-24：**[发布 magicdub-cli v0.2.0](events/2026-09/2026-09-24_114318_发布magicdub-cli_v020.md)**。`releases/latest` → v0.2.0（`956fd1b`）；轮次批处理 fitting。
+- 2026-09-24：**[同轮先全部 TTS 再 duration_fitting](events/2026-09/2026-09-24_120612_同轮先全部TTS再duration_fitting.md)**。阶段批处理；相对 v0.2.0 的调度修正，未发版。
+
+- 2026-09-24：**[发布 magicdub-cli v0.2.0](events/2026-09/2026-09-24_114318_发布magicdub-cli_v020.md)**。`releases/latest` 仍为 v0.2.0；其后有调度修正待发。
 
 - 2026-09-24：**[落地轮次批处理 fitting 调度](events/2026-09/2026-09-24_113736_落地轮次批处理fitting调度.md)**。已随 v0.2.0 发布。
 

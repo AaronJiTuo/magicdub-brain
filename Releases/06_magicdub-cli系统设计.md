@@ -31,7 +31,7 @@
 | pipeline | 串行；fitting 为**轮次批处理**（非整句链内嵌重译）；失败即停 |
 | fixed | demux、clipping、duration_fitting、alignment、mixing |
 | slots | 单 adapter；`run.slots.*.order` 为单元素数组，实现取 `order[0]` |
-| fitting | 首译全句一批；不合格整批再译（≤ max_rewrites）；同轮 TTS／测时长串行；合格／forced；全部选完后再串行 alignment |
+| fitting | 首译全句一批；不合格整批再译（≤ max_rewrites）；同轮先全部 TTS 再全部 duration_fitting／标 selection（均串行）；合格／forced；全部选完后再串行 alignment |
 | 状态 | 全 schema 写入，未用填 null；`ledger` 逐请求追加 |
 | 配置／凭据 | 安装／升级／每次启动确保 `~/.magicdub/cli/config.yaml` 与 `credentials`：缺文件写默认，已有则补齐缺失键（保留用户值；凭据不改写已有 Key）；文件优先，缺 key 再读环境变量 |
 | 锁 | 任务根 `run.lock` 文件 + state 镜像；同机死 pid 清、活则拒；他机只报错 |
@@ -118,8 +118,8 @@ step 对 pipeline 的 return：`ok`、可选 `error_code`／`message`；slot 成
 start → demux → sep → asr → clipping
   → translation(attempt=1, 全句)
   → for attempt = 1 .. 1+max_rewrites:
-        对尚未选定的、已有该 attempt 译文的句子（串行）：
-          tts → duration_fitting → 标 selection（pass／rejected）
+        对本轮待处理句（串行）：先全部 tts
+        再全部 duration_fitting → 标 selection（pass／rejected）
         若仍有未选定且 attempt 未到上限：
           translation(attempt+1, 全部 rejected + history)
         若仍有未选定且已到上限：
@@ -128,7 +128,7 @@ start → demux → sep → asr → clipping
   → mixing → finish
 ```
 
-同轮内 TTS／duration_fitting／selection／alignment **均串行**；不做句级并行。
+同轮内按**阶段**串行：先完成本轮全部 TTS，再完成本轮全部 duration_fitting／selection；不做句级并行。alignment 在全部句选定后串行。
 
 ### 4.1 duration_fitting 之后（按轮，pipeline 拥有）
 
@@ -157,15 +157,13 @@ flowchart TD
   start(((start))) --> demux([demux]) --> sep([sep]) --> asr([asr])
   asr --> clipping([clipping])
   clipping --> tr1([translation batch])
-  tr1 --> tts([tts serial per sentence])
-  tts --> fitting([duration_fitting])
-  fitting --> sel{mark selection}
-  sel -->|pass| more{more unsettled?}
-  sel -->|rejected and rounds left| trN([translation batch rejected])
+  tr1 --> tts([all TTS this round])
+  tts --> fitting([all duration_fitting + selection])
+  fitting --> more{unsettled?}
+  more -->|yes and rounds left| trN([translation batch rejected])
   trN --> tts
-  sel -->|rejected and last round| forced([forced select])
-  forced --> more
-  more -->|yes unsettled in round| tts
+  more -->|yes and last round| forced([forced select])
+  forced --> align
   more -->|all selected| align([alignment serial])
   align --> mix([mixing]) --> finish(((finish)))
 ```
@@ -389,5 +387,7 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-24_112848_暂不做TTS与alignment并行.md`
 - `.records/events/2026-09/2026-09-24_113029_删除cost_of_duration_fitting费用项.md`
 - `.records/events/2026-09/2026-09-24_113736_落地轮次批处理fitting调度.md`
+- `.records/events/2026-09/2026-09-24_114318_发布magicdub-cli_v020.md`
+- `.records/events/2026-09/2026-09-24_120612_同轮先全部TTS再duration_fitting.md`
 
 未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。
