@@ -1,0 +1,9 @@
+{
+  "usage": {
+    "duration": 4,
+    "total_tokens": 174,
+    "output_tokens": 14,
+    "input_tokens": 160
+  },
+  "output_task_status": "SUCCEEDED"
+}

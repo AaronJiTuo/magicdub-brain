@@ -1,0 +1,39 @@
+{
+  "status": "ok",
+  "model": "qwen-audio-3.1-asr-flash-filetrans",
+  "input_duration_s": 4.684,
+  "sentence_count": 1,
+  "transcript_preview": "在中餐外卖店点一道菜就得花三十纽币左右。",
+  "cost_cny": 0.0001658,
+  "usage_keys": [
+    "duration",
+    "input_tokens",
+    "output_tokens",
+    "total_tokens"
+  ],
+  "usage": {
+    "duration": 4,
+    "total_tokens": 174,
+    "output_tokens": 14,
+    "input_tokens": 160
+  },
+  "parsed_input_tokens": 160,
+  "parsed_output_tokens": 14,
+  "cost_from_tokens_helper": 0.0001658,
+  "task_top_keys": [
+    "output",
+    "request_id",
+    "usage"
+  ],
+  "output_keys": [
+    "end_time",
+    "file_url",
+    "results",
+    "scheduled_time",
+    "submit_time",
+    "subtask_status",
+    "task_id",
+    "task_status",
+    "transcription_url"
+  ]
+}
