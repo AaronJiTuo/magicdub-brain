@@ -4,6 +4,8 @@
 
 ## 当前阶段
 
+- 2026-09-25：**[发布 magicdub-cli v0.2.6](events/2026-09/2026-09-25_140952_发布magicdub-cli_v026.md)**。兼容 MVSep `"success": "true"`；`b218f6e`。
+
 - 2026-09-25：**[发布 magicdub-cli v0.2.5](events/2026-09/2026-09-25_134520_发布magicdub-cli_v025修复version显示.md)**。热修 `--version` 与 `constants.VERSION` 脱节；`04e4f52`。
 
 - 2026-09-25：**[发布 magicdub-cli v0.2.4](events/2026-09/2026-09-25_133745_发布magicdub-cli_v024.md)**。`releases/latest` 曾指向 v0.2.4（`03d261e`）。可选 `mvsep/dnr-v3`。
@@ -226,7 +228,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.5）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。可选 `mvsep/dnr-v3`：`slots.sep: [mvsep/dnr-v3]`。原 v0.3.0 媒体解耦计划已撤销。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.6）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。可选 `mvsep/dnr-v3`：`slots.sep: [mvsep/dnr-v3]`。原 v0.3.0 媒体解耦计划已撤销。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 
