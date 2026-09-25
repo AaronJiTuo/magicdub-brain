@@ -4,15 +4,23 @@
 
 ## 当前阶段
 
-- 2026-09-25：**[发布 magicdub-cli v0.2.9](events/2026-09/2026-09-25_190931_发布magicdub-cli_v029.md)**。`latest`→v0.2.9（`953cc98`）。可选 `fal/sam-audio`、Fish／OpenRouter Fish TTS。
+- 2026-09-26：**[发布 magicdub-cli v0.2.11](events/2026-09/2026-09-26_010323_发布magicdub-cli_v0211.md)**。`latest`→v0.2.11（`3e2908a`）。finish 时长报告＋mvsep FLAC。
+
+- 2026-09-26：**[mvsep/dnr-v3 上传前转 FLAC](events/2026-09/2026-09-26_004100_mvsep上传前转FLAC.md)**。已随 v0.2.11 发布。
+
+- 2026-09-25：**[finish 报告增加视频时长与运行时长](events/2026-09/2026-09-25_210100_finish报告增加视频与运行时长.md)**。已随 v0.2.11 发布。
+
+- 2026-09-25：**[发布 magicdub-cli v0.2.10](events/2026-09/2026-09-25_204254_发布magicdub-cli_v0210.md)**。`latest`曾为 v0.2.10（`ded3b99`）；现已被 v0.2.11 取代。
+
+- 2026-09-25：**[实现 magicdub config 交互选 slots](events/2026-09/2026-09-25_203808_实现magicdub_config交互选slots.md)**。已随 v0.2.10 发布。
+
+- 2026-09-25：**[发布 magicdub-cli v0.2.9](events/2026-09/2026-09-25_190931_发布magicdub-cli_v029.md)**。`latest`曾为 v0.2.9（`953cc98`）；现已被后续版本取代。
 
 - 2026-09-25：**[magicdub-cli 新增 OpenRouter Fish 两个 TTS adapter](events/2026-09/2026-09-25_184523_magicdub-cli新增OpenRouterFish两个TTS_adapter.md)**。已随 v0.2.9 发布。
 
 - 2026-09-25：**[magicdub-cli 新增 Fish Audio 两个 TTS adapter](events/2026-09/2026-09-25_182714_magicdub-cli新增FishAudio两个TTS_adapter.md)**。已随 v0.2.9 发布。
 
 - 2026-09-25：**[fal/sam-audio：改 id 并用 API residual](events/2026-09/2026-09-25_181255_fal_sam-audio改id并用residual.md)**。已随 v0.2.9 发布。
-
-- 2026-09-25：**[发布 magicdub-cli v0.2.8（百炼 ASR）](events/2026-09/2026-09-25_153504_发布magicdub-cli_v028百炼ASR.md)**。`latest`曾为 v0.2.8（`a0bcf7a`）；现已被 v0.2.9 取代。
 
 - 2026-09-25：**[magicdub-cli 接入百炼 Fun-ASR 与 Qwen Audio 3.1 ASR](events/2026-09/2026-09-25_153105_magicdub-cli接入百炼FunASR与Qwen31ASR.md)**。实现与探针；已随 v0.2.8 发布。
 
@@ -242,7 +250,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.9）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。可选 `mvsep/dnr-v3`、百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS。原 v0.3.0 媒体解耦计划已撤销。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.11）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。可选 `mvsep/dnr-v3`、百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS；交互 `magicdub config`；finish 报告含视频／运行时长；mvsep 上传前 FLAC。原 v0.3.0 媒体解耦计划已撤销。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 

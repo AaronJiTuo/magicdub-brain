@@ -2,7 +2,7 @@
 
 > 规范性事实来源。本地 CLI 译制引擎的架构、状态、路径与控制流；**永远不做唇形／口型修正**。  
 > 代码仓库：`https://github.com/shishengkai/magicdub-cli`（与 `magicdub-skills` 分离）。  
-> 已发布线至 **v0.2.9**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
+> 已发布线至 **v0.2.11**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
 
 ---
 
@@ -26,14 +26,14 @@
 
 | 项 | 约定 |
 | --- | --- |
-| CLI | `magicdub run …`；`magicdub update` 默认装 **最新正式 GitHub Release**（可用 `--ref`／`MAGICDUB_REF` 覆盖）；缺参直接报错，无交互 |
+| CLI | `magicdub run …`（缺参直接报错，无交互）；`magicdub config`（交互选 slots，见下）；`magicdub update` 默认装 **最新正式 GitHub Release**（可用 `--ref`／`MAGICDUB_REF` 覆盖） |
 | 任务 | 每次 `run` **只新建并跑完一个任务目录**；不打开已有目录、不续跑、不跳过步骤 |
 | pipeline | 串行；fitting 为**轮次批处理**（非整句链内嵌重译）；失败即停 |
 | fixed | demux、clipping、duration_fitting、alignment、mixing |
 | slots | 单 adapter；`run.slots.*.order` 为单元素数组，实现取 `order[0]` |
 | fitting | 首译全句一批；不合格整批再译（≤ max_rewrites）；同轮先全部 TTS 再全部 duration_fitting／标 selection（均串行）；合格／forced；全部选完后再串行 alignment |
 | 状态 | 全 schema 写入，未用填 null；`ledger` 逐请求追加 |
-| 配置／凭据 | 安装／升级／每次启动确保 `~/.magicdub/cli/config.yaml` 与 `credentials`：缺文件写默认，已有则补齐缺失键（保留用户值；凭据不改写已有 Key）；文件优先，缺 key 再读环境变量 |
+| 配置／凭据 | 安装／升级／每次启动确保 `~/.magicdub/cli/config.yaml` 与 `credentials`：缺文件写默认，已有则补齐缺失键（保留用户值；凭据不改写已有 Key）；文件优先，缺 key 再读环境变量；**`magicdub config`** 仅交互改 `slots`（见 §2.3a） |
 | 锁 | 任务根 `run.lock` 文件 + state 镜像；同机死 pid 清、活则拒；他机只报错 |
 
 ### 2.2 不做
@@ -63,11 +63,21 @@
 
 `openrouter/fish-audio/s2.1-pro-free`／`openrouter/fish-audio/s2.1-pro`：OpenRouter Instant clone（`POST /api/v1/audio/speech` JSON，模型分别为 `fish-audio/s2.1-pro-free:free`／`fish-audio/s2.1-pro`）；`input_references`＝参考音频＋`src.text`；`response_format=pcm` 后无损封 WAV；费用口径同官方 Fish（免费 0／付费 UTF-8 字节 × $0.000015 × 7）。启用：`slots.tts: [openrouter/fish-audio/s2.1-pro]` 等。
 
-`mvsep/dnr-v3`：apex `https://mvsep.com/api/separation/create`（非 de2）；DnR v3 Mel+SCNet；输入经 fal CDN URL；`speech` 保留，music+sfx 合成 `non_speech`；计费每次 1 积分 × $0.00／积分 × 汇率 7。启用：`slots.sep: [mvsep/dnr-v3]`。
+`mvsep/dnr-v3`：apex `https://mvsep.com/api/separation/create`（非 de2）；DnR v3 Mel+SCNet；上传前将 slot 音频 **无损转 FLAC** 再经 fal CDN URL；`speech` 保留，music+sfx 合成 `non_speech`；计费每次 1 积分 × $0.00／积分 × 汇率 7。启用：`slots.sep: [mvsep/dnr-v3]`。免费档约 100 MB／10 min；FLAC 用于缓解 demux WAV 体积触顶。
 
 百炼 ASR：输入经 fal CDN 公网 HTTPS URL；adapter 内转 16 kHz 单声道 PCM16；异步 transcription。Fun-ASR 计费：转写 `content_duration_in_milliseconds`（缺则 `usage.duration`）× 北京 ¥0.00022／秒。Qwen Audio 3.1 filetrans：北京 ¥0.8／百万输入 Token + ¥2.7／百万输出 Token；`usage` 缺 token 字段时 `cost_cny` 为 null。
 
-目录名与 `adapter_id` 对应：`vendor/model` → `vendor_model`（`-` 改为 `_`）。例如日后 `openrouter/whisper` → `adapters/asr/openrouter_whisper/`。
+目录名与 `adapter_id` 对应：`vendor/model` → `vendor_model`（`-` 改为 `_`）。例如日后 `openrouter/whisper` → `adapters/asr/openrouter_whisper/`。每个 adapter 类声明 `slot`（`sep`／`asr`／`translation`／`tts`）；registry 按 `slot` 列出可选 id。
+
+### 2.3a `magicdub config`
+
+交互子命令（依赖 `questionary`），无非交互参数。
+
+- 一级：翻译模型 → 声音分离模型 → 语音识别模型 → 语音合成模型 → **完成**（↑↓＋Enter）。
+- 二级：该 slot 下全部已注册 `adapter_id`（当前已选前缀 `✓`）＋**返回**；单选后写回内存 `slots.<name> = [id]`，再回一级。
+- **完成**：相对启动时读入的 slots **有变更**则只更新 `config.yaml` 的 `slots` 块（保留其余键与注释）；**无变更不写盘**。
+- 非可交互终端（非 TTY）：打印说明并以非 0 退出。
+- 本版不改 `projects_dir`／fitting／concurrency／凭据。
 
 ### 2.4 已钉死约定
 
@@ -100,7 +110,7 @@
 | M6 | alignment + mixing + finish | final.{mp4,wav,srt}；`done` |
 | M7 | 端到端 | 30–90 s 英文样片**一次新任务**；费用可加总；**不测续跑** |
 
-M0 依赖：Python ≥ 3.12；`httpx`、`pyyaml`、`python-ulid`；系统 `ffmpeg`／`ffprobe`。
+M0 依赖：Python ≥ 3.12；`httpx`、`pyyaml`、`python-ulid`、`questionary`（及传递依赖）；系统 `ffmpeg`／`ffprobe`。
 
 工作项细节与源码树见下文 §7–§8；实现时按里程碑推进即可，无需另读已归档 Draft。
 
@@ -278,7 +288,7 @@ flowchart TD
 
 ### 5.11 finish
 
-校验三文件与句数；`run.status=done`；打印路径与费用摘要。
+校验三文件与句数；`run.status=done`；打印路径、**视频时长**（探测源 `video`／`silent_video`／`audio`）、**运行时长**（`created_at` → `finish.finished_at`）与费用摘要。
 
 ---
 
@@ -396,7 +406,7 @@ src/magicdub_cli/
 
 ## 9. 开发入口
 
-1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.9）。  
+1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.11）。  
 2. 新工作以已发布行为与本文为准；**不要**按已撤销的 v0.3.0 媒体解耦计划开工。  
 3. API 端点与计费可从已验收的 `magicdub-skills` 移植，须适配本仓库 adapter 契约。  
 4. 系统依赖：`ffmpeg`、`ffprobe`。
@@ -457,5 +467,10 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-25_182714_magicdub-cli新增FishAudio两个TTS_adapter.md`
 - `.records/events/2026-09/2026-09-25_184523_magicdub-cli新增OpenRouterFish两个TTS_adapter.md`
 - `.records/events/2026-09/2026-09-25_190931_发布magicdub-cli_v029.md`
+- `.records/events/2026-09/2026-09-25_203808_实现magicdub_config交互选slots.md`
+- `.records/events/2026-09/2026-09-25_204254_发布magicdub-cli_v0210.md`
+- `.records/events/2026-09/2026-09-25_210100_finish报告增加视频与运行时长.md`
+- `.records/events/2026-09/2026-09-26_004100_mvsep上传前转FLAC.md`
+- `.records/events/2026-09/2026-09-26_010323_发布magicdub-cli_v0211.md`
 
 未单独发布开发文档：v0.1.0 见 §2；**原 §2B／v0.3.0 已撤销**。
