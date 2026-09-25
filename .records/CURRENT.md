@@ -4,6 +4,12 @@
 
 ## 当前阶段
 
+- 2026-09-25：**[发布 magicdub-cli v0.2.4](events/2026-09/2026-09-25_133745_发布magicdub-cli_v024.md)**。`releases/latest` → v0.2.4（`03d261e`）。可选 `mvsep/dnr-v3`。
+
+- 2026-09-25：**[mvsep/dnr-v3 计费 1 积分 × $0.00](events/2026-09/2026-09-25_133448_mvsep_dnr_v3计费定为1积分乘0美元.md)**。本地估 `cost_cny=0`；已写入 Releases/06 §3.3#5。
+
+- 2026-09-25：**[magicdub-cli 新增 mvsep/dnr-v3](events/2026-09/2026-09-25_133156_magicdub-cli新增mvsep_dnr_v3_adapter.md)**。apex API + fal CDN URL；speech／music+sfx→non_speech。已随 v0.2.4 发布；默认 sep 仍为 Demucs。
+
 - 2026-09-25：**[发布 magicdub-cli v0.2.3](events/2026-09/2026-09-25_131613_发布magicdub-cli_v023.md)**。`releases/latest` → v0.2.3（`0ee74f5`）。DeepSeek 人民币价；fal 原样落盘／高质量 wav。
 
 - 2026-09-25：**[Adapter 有输出选项时选质量最高](events/2026-09/2026-09-25_131403_Adapter有输出选项时选质量最高.md)**。修正 §3.3 第 8 条；Demucs 恢复 `output_format=wav`。Slot 仍原样 commit。
@@ -218,7 +224,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.3）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。原 v0.3.0 媒体解耦计划已撤销；下一版功能范围待用户另定。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.4）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。可选 `mvsep/dnr-v3`：`slots.sep: [mvsep/dnr-v3]`。原 v0.3.0 媒体解耦计划已撤销。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 

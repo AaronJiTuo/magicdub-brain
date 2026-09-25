@@ -2,7 +2,7 @@
 
 > 规范性事实来源。本地 CLI 译制引擎的架构、状态、路径与控制流；**永远不做唇形／口型修正**。  
 > 代码仓库：`https://github.com/shishengkai/magicdub-cli`（与 `magicdub-skills` 分离）。  
-> 已发布线至 **v0.2.3**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
+> 已发布线至 **v0.2.4**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
 
 ---
 
@@ -44,10 +44,13 @@
 
 | slot | adapter_id | 目录 | 凭据 |
 | --- | --- | --- | --- |
-| sep | `fal/demucs` | `adapters/sep/fal_demucs/` | `FAL_KEY` |
+| sep | `fal/demucs`（默认） | `adapters/sep/fal_demucs/` | `FAL_KEY` |
+| sep | `mvsep/dnr-v3`（可选） | `adapters/sep/mvsep_dnr_v3/` | `MVSEP_API_KEY` + `FAL_KEY`（fal CDN 上传） |
 | asr | `fal/whisper` | `adapters/asr/fal_whisper/` | `FAL_KEY` |
 | translation | `deepseek/deepseek-flash` | `adapters/translation/deepseek_deepseek_flash/` | `DEEPSEEK_API_KEY` |
 | tts | `fal/index-tts-2` | `adapters/tts/fal_index_tts_2/` | `FAL_KEY` |
+
+`mvsep/dnr-v3`：apex `https://mvsep.com/api/separation/create`（非 de2）；DnR v3 Mel+SCNet；输入经 fal CDN URL；`speech` 保留，music+sfx 合成 `non_speech`；计费每次 1 积分 × $0.00／积分 × 汇率 7。启用：`slots.sep: [mvsep/dnr-v3]`。
 
 目录名与 `adapter_id` 对应：`vendor/model` → `vendor_model`（`-` 改为 `_`）。例如日后 `openrouter/whisper` → `adapters/asr/openrouter_whisper/`。
 
@@ -120,7 +123,7 @@ CLI → pipeline → step（fixed:* | slot:*）→ adapter（仅 slot 挂载）
 2. adapter 只 return；slot 负责把产物 **原样 commit** 到正式路径并写 assets／ledger（见第 8 条）。  
 3. 状态只存相对任务根的 path + sha256 + size_bytes 与标量；费用 CNY，精度 `0.00000001`。  
 4. step 名：业务名原样（`demux`／`sep`／`asr`／`translation`／`tts`）；自拟用名词（`clipping`／`duration_fitting`／`alignment`／`mixing`）。  
-5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：生成音频时长秒用 `wave`（非 wav 则 `ffprobe`）量测后 **ceil** × **$0.002** × 汇率 **7**；fal Whisper：queue status 的 `metrics.inference_time`（否则结果头 `x-fal-raw-time`）**ceil** × **$0.0008** × 汇率 **7**——Usage 偶发 `$0.00125` 待供应商澄清前按 Pricing API 的 0.0008 估算；fal Demucs：输入音频时长秒 **ceil** × **$0.0007** × 汇率 **7**）。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。  
+5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：生成音频时长秒用 `wave`（非 wav 则 `ffprobe`）量测后 **ceil** × **$0.002** × 汇率 **7**；fal Whisper：queue status 的 `metrics.inference_time`（否则结果头 `x-fal-raw-time`）**ceil** × **$0.0008** × 汇率 **7**——Usage 偶发 `$0.00125` 待供应商澄清前按 Pricing API 的 0.0008 估算；fal Demucs：输入音频时长秒 **ceil** × **$0.0007** × 汇率 **7**；MVSep DnR v3：每次成功分离 **1 积分** × **$0.00／积分** × 汇率 **7**）。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。  
 6. **媒体与厂商传输（务实）**：adapter 可直接调 ffmpeg／ffprobe、直接上传／下载、共用包级 `fal_api`（或同类 queue／upload 辅助）。**不**为假想的多存储／多厂商预先建 MediaSession／capability／provider 中台。将来若确需阿里云 OSS 等与 fal CDN 并列，再在那时抽可选上传实现。  
 7. **编排边界仍有效**：pipeline 不 `import` 具体 adapter／`get_adapter`；adapter 不读／写 `state.json`、不碰正式 `media/`／`exports/`、不感知 pipeline；slot 给路径与凭据、消费 `cost_cny`。换／加 adapter 默认只动该 adapter 目录与 registry。  
 8. **slot 原样保留 adapter 产出**：各 slot（sep／asr／translation／tts）对 adapter 返回的文件／文本 **只 commit／写 state，不做转码、重采样、改封装或其它内容处理**。正式路径扩展名跟随 adapter 落盘后缀。需要某种格式时，由**使用方**（下一 adapter 或 fixed step）自行处理，不在上一 slot 末尾预转。Adapter 侧：若供应商 API **提供输出格式选项**，选**质量最高**的一档（通常 `wav` 优于 `mp3`）；无选项则接受其唯一／默认格式并按远程扩展名落盘。Adapter 契约内自产的衍生轨（如 Demucs 本地算的 `non_speech`）除外。
@@ -376,7 +379,7 @@ src/magicdub_cli/
 
 ## 9. 开发入口
 
-1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.3）。  
+1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.4）。  
 2. 新工作以已发布行为与本文为准；**不要**按已撤销的 v0.3.0 媒体解耦计划开工。  
 3. API 端点与计费可从已验收的 `magicdub-skills` 移植，须适配本仓库 adapter 契约。  
 4. 系统依赖：`ffmpeg`、`ffprobe`。
@@ -426,5 +429,8 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-25_131121_钉死slot原样保留adapter默认产出.md`
 - `.records/events/2026-09/2026-09-25_131403_Adapter有输出选项时选质量最高.md`
 - `.records/events/2026-09/2026-09-25_131613_发布magicdub-cli_v023.md`
+- `.records/events/2026-09/2026-09-25_133156_magicdub-cli新增mvsep_dnr_v3_adapter.md`
+- `.records/events/2026-09/2026-09-25_133448_mvsep_dnr_v3计费定为1积分乘0美元.md`
+- `.records/events/2026-09/2026-09-25_133745_发布magicdub-cli_v024.md`
 
 未单独发布开发文档：v0.1.0 见 §2；**原 §2B／v0.3.0 已撤销**。
