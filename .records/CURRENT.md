@@ -4,6 +4,18 @@
 
 ## 当前阶段
 
+- 2026-09-25：**[发布 magicdub-cli v0.2.3](events/2026-09/2026-09-25_131613_发布magicdub-cli_v023.md)**。`releases/latest` → v0.2.3（`0ee74f5`）。DeepSeek 人民币价；fal 原样落盘／高质量 wav。
+
+- 2026-09-25：**[Adapter 有输出选项时选质量最高](events/2026-09/2026-09-25_131403_Adapter有输出选项时选质量最高.md)**。修正 §3.3 第 8 条；Demucs 恢复 `output_format=wav`。Slot 仍原样 commit。
+
+- 2026-09-25：**[钉死 slot 原样保留 adapter 产出](events/2026-09/2026-09-25_131121_钉死slot原样保留adapter默认产出.md)**。slot 不转码；API 格式选择见上条修正。
+
+- 2026-09-24：**[撤销 magicdub-cli v0.3.0 媒体解耦计划](events/2026-09/2026-09-24_225820_撤销magicdub-cli_v030媒体解耦计划.md)**。§2B 已删；接受包级 `fal_api`／直接 ffmpeg／上传。下一版范围待另定。
+
+- 2026-09-24：**[钉死 magicdub-cli v0.3.0 开发计划](events/2026-09/2026-09-24_215639_钉死magicdub-cli_v030开发计划.md)**。**已撤销**（见上条）。
+
+- 2026-09-24：**[钉死 pipeline／step／adapter 三层隔离](events/2026-09/2026-09-24_193605_钉死pipeline_step_adapter三层隔离.md)**。编排边界仍有效；**不再**为此排期拆 `fal_api`／媒体中台（见撤销记录与 Releases/06 §3.3）。
+
 - 2026-09-24：**[发布 magicdub-cli v0.2.2](events/2026-09/2026-09-24_191310_发布magicdub-cli_v022.md)**。`releases/latest` → v0.2.2（`c2b8eb0`）。fal 三 adapter 本地 `cost_cny`。
 
 - 2026-09-24：**[Demucs 账单 quantity=ceil(音频秒)](events/2026-09/2026-09-24_191100_Demucs账单quantity等于ceil音频秒.md)**。Admin 对照：5.25s→qty 6；历史 ≈66.25s→qty 67。与 adapter 估算一致。
@@ -206,7 +218,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.2）。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.3）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。原 v0.3.0 媒体解耦计划已撤销；下一版功能范围待用户另定。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 

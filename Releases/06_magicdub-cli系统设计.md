@@ -2,7 +2,7 @@
 
 > 规范性事实来源。本地 CLI 译制引擎的架构、状态、路径与控制流；**永远不做唇形／口型修正**。  
 > 代码仓库：`https://github.com/shishengkai/magicdub-cli`（与 `magicdub-skills` 分离）。  
-> **实现与验收以本文第 2 节（v0.1.0）为准**；其后各节描述完整产品能力，超出 v0.1.0 范围的不在本版实现。
+> 已发布线至 **v0.2.3**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
 
 ---
 
@@ -12,7 +12,7 @@
 | --- | --- |
 | 形态 | 本地命令行：`magicdub`；仓库／包名仍为 `magicdub-cli`；用 `uv tool install` 安装，不放在配置目录下 |
 | 与 skills | 配置／凭据均在 `~/.magicdub/cli/`（与 skills 分文件）；任务在 `…/MagicDub/cli/`，**不**打开 skills 的 `project.json`；本线不读 skills 凭据文件 |
-| 架构 | **编排式 pipeline**：fixed step 与 slot（可挂 adapter）由 pipeline 调度；step 互不调用；adapter 不写状态、不碰正式路径 |
+| 架构 | **三层编排**：pipeline → step（fixed／slot）→ adapter；依赖只向下；pipeline 不感知具体 adapter 实现；adapter 不感知 pipeline／state／正式路径 |
 | 产出 | 配音成片 MP4、混音母版 WAV、SRT；人民币费用 ledger + 汇总 |
 | 非目标 | 口型修正、下载上游（首版）、Web／Cloud |
 
@@ -63,6 +63,7 @@
 | 语速启发式 | **不**在程序中写入「每秒 N 字」等语言相关常数；时长以 TTS 实测 `fitting_ratio` 为准 |
 | 费用归属 | 凡 translation／TTS／sep／asr 的 API 费分别计入对应 `cost_of_*`（含各轮返工）；**无** `cost_of_duration_fitting`；`duration_fitting` 无模型费用 |
 | adapter 费用 | **每个 adapter 成功 return 必须带本次 `cost_cny`（人民币）**；计费算法留在 adapter 内（按供应商公开定价／用量估算）；**禁止**把 fal Platform billing-events 等供应商账单查询上移到 slot／pipeline。slot 只消费 `cost_cny` 写入 ledger 与 `assets.cost`；未知时才允许 `null`（应尽量避免） |
+| 三层隔离 | 见 §3：编排职责（pipeline／step／adapter）仍有效；**不以**独立大版本去拆 `fal_api`／上媒体中台 |
 | 窗口 ≤ 0 或 ASR 空文本／0 句 | `input_invalid`，失败 |
 | 对齐容差 | ≤ 1 ms |
 | `speaker_id` | 文本 |
@@ -90,23 +91,43 @@ M0 依赖：Python ≥ 3.12；`httpx`、`pyyaml`、`python-ulid`；系统 `ffmpe
 ## 3. 分层与硬规则
 
 ```text
-CLI → pipeline → fixed:* | slot:* → adapter(s)
-                 ↘ state.json + 任务目录
+CLI → pipeline → step（fixed:* | slot:*）→ adapter（仅 slot 挂载）
+                 ↘ state.json + 任务目录（仅 pipeline／step 写）
 ```
 
-| 层 | 职责 |
-| --- | --- |
-| pipeline | 选下一步、分支／循环、更新编排态；不做 demux／API |
-| fixed／slot | 读 input → 执行 → 校验 → **写 assets** → return；**禁止调用其他 step** |
-| adapter | 收规范化输入；只写 `tmp/<step>/`；return 产物引用与 **`cost_cny`**；**不写 state、不碰正式路径**；费用估算自包含，不依赖 slot／pipeline 再调供应商账单 API |
+### 3.1 三层职责与可见性
 
-硬规则：
+| 层 | 知道什么 | 不知道什么 | 职责 |
+| --- | --- | --- | --- |
+| **pipeline** | step 名字与 `StepResult`（`ok`／错误码／message；slot 成功时可带 `adapter_id` **字符串**供 ledger） | 具体 adapter 类、供应商 SDK、`AdapterError`、厂商传输细节 | 选下一步、分支／循环、更新编排态；不做 demux／API／文件厂商协议 |
+| **step**（fixed／slot） | 本 step 的 assets 契约；slot 另知「如何按 order 取 adapter、如何把 adapter 成败映射为 `StepResult`」 | pipeline 内部调度算法；其他 step 的实现 | 读 input → 执行 → 校验 → **写 assets** → return；**禁止调用其他 step** |
+| **adapter** | slot 传入的规范化输入；协议／上传／轮询／下载／本地计费（可直接 ffmpeg、可共用 `fal_api`） | pipeline、state.json、正式 `media/`／`exports/`、其他 adapter 的业务逻辑 | 只写 `tmp/<step>/`；return 产物引用与 **`cost_cny`**；不写 state、不碰正式路径 |
+
+依赖方向：**只允许上层依赖下层契约，禁止下层 import 上层编排。**  
+- pipeline **不得** `import` 具体 adapter 或 `get_adapter`。  
+- adapter **不得** import pipeline／state 写入／slot 实现。  
+- 换／加 adapter 应尽量只动 `adapters/<slot>/<vendor_model>/`（外加注册表一行）；同供应商的 queue／upload 辅助（如包级 `fal_api`）允许共用，见 §3.3 第 6 条。
+
+### 3.2 契约面（slot↔adapter）
+
+- slot 与 adapter 之间应有**窄契约**（协议／基类、成败与 `cost_cny` 的表达）。  
+- pipeline 只认 `StepResult`；slot 将 adapter 成败译成 `StepResult`。`AdapterError` 与 `StepResult` 同处包级 `errors` 的现状可接受，不为此单独排期迁移。  
+- 成功时 adapter return 必须含 **`cost_cny`**（规则见下条硬规则 5）。计费、HTTP 分类、汇率等可与同供应商辅助模块共存；**费用估算不得上移到 slot／pipeline 去查 Platform 账单**。
+
+### 3.3 硬规则
 
 1. step 互不调用；下一步只由 pipeline 决定。  
-2. adapter 只 return；slot 负责 commit 正式路径并写 assets／ledger。  
+2. adapter 只 return；slot 负责把产物 **原样 commit** 到正式路径并写 assets／ledger（见第 8 条）。  
 3. 状态只存相对任务根的 path + sha256 + size_bytes 与标量；费用 CNY，精度 `0.00000001`。  
 4. step 名：业务名原样（`demux`／`sep`／`asr`／`translation`／`tts`）；自拟用名词（`clipping`／`duration_fitting`／`alignment`／`mixing`）。  
-5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：生成音频时长秒用 `wave`（非 wav 则 `ffprobe`）量测后 **ceil** × **$0.002** × 汇率 **7**；fal Whisper：queue status 的 `metrics.inference_time`（否则结果头 `x-fal-raw-time`）**ceil** × **$0.0008** × 汇率 **7**——Usage 偶发 `$0.00125` 待供应商澄清前按 Pricing API 的 0.0008 估算；fal Demucs：输入音频时长秒 **ceil** × **$0.0007** × 汇率 **7**）。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。
+5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：生成音频时长秒用 `wave`（非 wav 则 `ffprobe`）量测后 **ceil** × **$0.002** × 汇率 **7**；fal Whisper：queue status 的 `metrics.inference_time`（否则结果头 `x-fal-raw-time`）**ceil** × **$0.0008** × 汇率 **7**——Usage 偶发 `$0.00125` 待供应商澄清前按 Pricing API 的 0.0008 估算；fal Demucs：输入音频时长秒 **ceil** × **$0.0007** × 汇率 **7**）。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。  
+6. **媒体与厂商传输（务实）**：adapter 可直接调 ffmpeg／ffprobe、直接上传／下载、共用包级 `fal_api`（或同类 queue／upload 辅助）。**不**为假想的多存储／多厂商预先建 MediaSession／capability／provider 中台。将来若确需阿里云 OSS 等与 fal CDN 并列，再在那时抽可选上传实现。  
+7. **编排边界仍有效**：pipeline 不 `import` 具体 adapter／`get_adapter`；adapter 不读／写 `state.json`、不碰正式 `media/`／`exports/`、不感知 pipeline；slot 给路径与凭据、消费 `cost_cny`。换／加 adapter 默认只动该 adapter 目录与 registry。  
+8. **slot 原样保留 adapter 产出**：各 slot（sep／asr／translation／tts）对 adapter 返回的文件／文本 **只 commit／写 state，不做转码、重采样、改封装或其它内容处理**。正式路径扩展名跟随 adapter 落盘后缀。需要某种格式时，由**使用方**（下一 adapter 或 fixed step）自行处理，不在上一 slot 末尾预转。Adapter 侧：若供应商 API **提供输出格式选项**，选**质量最高**的一档（通常 `wav` 优于 `mp3`）；无选项则接受其唯一／默认格式并按远程扩展名落盘。Adapter 契约内自产的衍生轨（如 Demucs 本地算的 `non_speech`）除外。
+
+### 3.4 已知实现备注
+
+v0.2.2：包级 `fal_api.py`、包级 `errors.AdapterError` 与早期「禁止融合层」措辞并存——**现以 §3.3 第 6 条为准，接受现状**；原 v0.3.0 媒体解耦计划已整节撤销，**不排期**为对齐而去大拆。
 
 step 对 pipeline 的 return：`ok`、可选 `error_code`／`message`；slot 成功时带 `adapter_id`（入 ledger，不入句级 assets）。失败不得留下半套已提交字段。
 
@@ -315,10 +336,10 @@ slots:
 <task_root>/
   state.json
   run.lock
-  media/src/…
-  media/sentences/<id>/src.wav
-  media/sentences/<id>/tgt/attempt_<n>.wav
-  media/sentences/<id>/tgt/attempt_<n>.aligned.wav
+  media/src/…                    # speech／non_speech 等扩展名随 adapter
+  media/sentences/<id>/src.wav   # clipping（fixed）产物
+  media/sentences/<id>/tgt/attempt_<n>.*   # 扩展名随 TTS adapter 默认输出
+  media/sentences/<id>/tgt/attempt_<n>.aligned.*  # alignment（fixed）
   exports/final.{mp4,wav,srt}
   tmp/<step>/…
 ```
@@ -327,11 +348,12 @@ slots:
 
 ```text
 src/magicdub_cli/
-  cli.py, constants.py, pipeline/
+  cli.py, constants.py, fal_api.py, ffmpeg_util.py, errors.py, pipeline/
   steps/fixed/…  steps/slots/…
   adapters/base.py, registry.py
   adapters/{sep,asr,translation,tts}/<vendor_model>/
-  state/, media/
+  state/
+  media/files.py              # 本地 file_ref／commit
 ```
 
 ---
@@ -354,8 +376,8 @@ src/magicdub_cli/
 
 ## 9. 开发入口
 
-1. 克隆／使用已有空仓 `magicdub-cli`。  
-2. 按 §2.5 从 **M0** 起实现；行为冲突时以 **§2** 覆盖本文后续「完整能力」描述。  
+1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.2）。  
+2. 新工作以已发布行为与本文为准；**不要**按已撤销的 v0.3.0 媒体解耦计划开工。  
 3. API 端点与计费可从已验收的 `magicdub-skills` 移植，须适配本仓库 adapter 契约。  
 4. 系统依赖：`ffmpeg`、`ffprobe`。
 
@@ -398,5 +420,11 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-24_190611_falDemucs按0007音频秒估算cost_cny.md`
 - `.records/events/2026-09/2026-09-24_191100_Demucs账单quantity等于ceil音频秒.md`
 - `.records/events/2026-09/2026-09-24_191310_发布magicdub-cli_v022.md`
+- `.records/events/2026-09/2026-09-24_193605_钉死pipeline_step_adapter三层隔离.md`
+- `.records/events/2026-09/2026-09-24_215639_钉死magicdub-cli_v030开发计划.md`
+- `.records/events/2026-09/2026-09-24_225820_撤销magicdub-cli_v030媒体解耦计划.md`
+- `.records/events/2026-09/2026-09-25_131121_钉死slot原样保留adapter默认产出.md`
+- `.records/events/2026-09/2026-09-25_131403_Adapter有输出选项时选质量最高.md`
+- `.records/events/2026-09/2026-09-25_131613_发布magicdub-cli_v023.md`
 
-未单独发布开发文档：v0.1.0 范围与里程碑已并入本文第 2 节，足够开工。
+未单独发布开发文档：v0.1.0 见 §2；**原 §2B／v0.3.0 已撤销**。

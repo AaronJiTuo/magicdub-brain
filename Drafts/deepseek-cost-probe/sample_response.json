@@ -1,0 +1,32 @@
+{
+  "id": "d6e66d47-3c42-4e4a-96d3-5c4d078afe7d",
+  "object": "chat.completion",
+  "created": 1790266732,
+  "model": "deepseek-flash",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"translations\":[{\"id\":1,\"text\":\"你好，世界。\"}]}",
+        "reasoning_content": "We need answer only valid JSON. Need translate to Chinese. Source \"Hello world.\" Target language zh. id 1. Need produce translations array with id text. Should be Chinese translation. Could be \"你好，世界。\" Common. Need maybe duration? Only JSON. Ensure valid."
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 78,
+    "completion_tokens": 75,
+    "total_tokens": 153,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 57
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 78
+  },
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669"
+}

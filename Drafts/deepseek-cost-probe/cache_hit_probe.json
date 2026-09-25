@@ -1,0 +1,41 @@
+{
+  "prefix_chars": 6240,
+  "runs": [
+    {
+      "n": 1,
+      "prompt_tokens": 1074,
+      "completion_tokens": 17,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1074,
+      "cached_tokens_detail": 0,
+      "model": "deepseek-flash"
+    },
+    {
+      "n": 2,
+      "prompt_tokens": 1074,
+      "completion_tokens": 16,
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 178,
+      "cached_tokens_detail": 896,
+      "model": "deepseek-flash"
+    },
+    {
+      "n": 3,
+      "prompt_tokens": 1074,
+      "completion_tokens": 16,
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 178,
+      "cached_tokens_detail": 896,
+      "model": "deepseek-flash"
+    },
+    {
+      "n": 4,
+      "prompt_tokens": 1074,
+      "completion_tokens": 16,
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 178,
+      "cached_tokens_detail": 896,
+      "model": "deepseek-flash"
+    }
+  ]
+}
