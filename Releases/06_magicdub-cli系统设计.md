@@ -2,7 +2,7 @@
 
 > 规范性事实来源。本地 CLI 译制引擎的架构、状态、路径与控制流；**永远不做唇形／口型修正**。  
 > 代码仓库：`https://github.com/shishengkai/magicdub-cli`（与 `magicdub-skills` 分离）。  
-> 已发布线至 **v0.2.4**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
+> 已发布线至 **v0.2.5**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
 
 ---
 
@@ -379,7 +379,7 @@ src/magicdub_cli/
 
 ## 9. 开发入口
 
-1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.4）。  
+1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.5）。  
 2. 新工作以已发布行为与本文为准；**不要**按已撤销的 v0.3.0 媒体解耦计划开工。  
 3. API 端点与计费可从已验收的 `magicdub-skills` 移植，须适配本仓库 adapter 契约。  
 4. 系统依赖：`ffmpeg`、`ffprobe`。
@@ -432,5 +432,6 @@ src/magicdub_cli/
 - `.records/events/2026-09/2026-09-25_133156_magicdub-cli新增mvsep_dnr_v3_adapter.md`
 - `.records/events/2026-09/2026-09-25_133448_mvsep_dnr_v3计费定为1积分乘0美元.md`
 - `.records/events/2026-09/2026-09-25_133745_发布magicdub-cli_v024.md`
+- `.records/events/2026-09/2026-09-25_134520_发布magicdub-cli_v025修复version显示.md`
 
 未单独发布开发文档：v0.1.0 见 §2；**原 §2B／v0.3.0 已撤销**。
