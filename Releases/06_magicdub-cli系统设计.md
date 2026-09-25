@@ -376,7 +376,7 @@ src/magicdub_cli/
 
 ## 9. 开发入口
 
-1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.2）。  
+1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.3）。  
 2. 新工作以已发布行为与本文为准；**不要**按已撤销的 v0.3.0 媒体解耦计划开工。  
 3. API 端点与计费可从已验收的 `magicdub-skills` 移植，须适配本仓库 adapter 契约。  
 4. 系统依赖：`ffmpeg`、`ffprobe`。
