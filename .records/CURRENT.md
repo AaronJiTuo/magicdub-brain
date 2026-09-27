@@ -4,7 +4,9 @@
 
 ## 当前阶段
 
-- 2026-09-27：**[发布 magicdub-cli v0.3.0](events/2026-09/2026-09-27_233706_发布magicdub-cli_v030.md)**。`latest`→v0.3.0（`97f201f`）。交付物／demux copy／mvsep 格式与按分钟计费。
+- 2026-09-28：**[发布 magicdub-cli v0.3.1](events/2026-09/2026-09-28_020200_发布magicdub-cli_v031.md)**。`latest`→v0.3.1（`69e8fdf`）。设置菜单：语音翻译／语音分离。
+
+- 2026-09-27：**[发布 magicdub-cli v0.3.0](events/2026-09/2026-09-27_233706_发布magicdub-cli_v030.md)**。曾为 `latest`（`97f201f`）；现已被 v0.3.1 取代。交付物／demux copy／mvsep 格式与按分钟计费。
 
 - 2026-09-27：**[mvsep 计费按分钟向下取整 × $0.025](events/2026-09/2026-09-27_140228_mvsep计费按分钟向下取整.md)**。已随 v0.3.0 发布。
 
@@ -262,7 +264,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 **v0.3.0**，`97f201f`）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。交付物为原视频同目录 `{stem}_MagicDub.{mp4,srt}`；demux 优先原编码 copy；mvsep 原样上传、动态 `output_format`、按分钟 floor × $0.025 × 7。可选百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS；交互 `magicdub config`；finish 报告含视频／运行时长。原「§2B 媒体解耦」计划已撤销，与本 v0.3.0 无关。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 **v0.3.1**，`69e8fdf`）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。交付物为原视频同目录 `{stem}_MagicDub.{mp4,srt}`；demux 优先原编码 copy；mvsep 原样上传、动态 `output_format`、按分钟 floor × $0.025 × 7。可选百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS；交互 `magicdub config`（菜单文案：语音翻译／语音分离／语音识别／语音合成）；finish 报告含视频／运行时长。原「§2B 媒体解耦」计划已撤销，与 v0.3.0／v0.3.1 无关。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 
