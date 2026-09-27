@@ -2,7 +2,7 @@
 
 > 规范性事实来源。本地 CLI 译制引擎的架构、状态、路径与控制流；**永远不做唇形／口型修正**。  
 > 代码仓库：`https://github.com/shishengkai/magicdub-cli`（与 `magicdub-skills` 分离）。  
-> 已发布线至 **v0.2.11**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（v0.3.0 媒体解耦计划）已整节撤销**，见 Record。
+> 已发布线至 **v0.3.0**。实现与验收以已发布行为及本文 §2／§3–§8 为准；**原 §2B（曾计划的 v0.3.0 媒体解耦）已整节撤销**，与本正式版 v0.3.0（交付物／demux／mvsep）无关，见 Record。
 
 ---
 
@@ -13,14 +13,14 @@
 | 形态 | 本地命令行：`magicdub`；仓库／包名仍为 `magicdub-cli`；用 `uv tool install` 安装，不放在配置目录下 |
 | 与 skills | 配置／凭据均在 `~/.magicdub/cli/`（与 skills 分文件）；任务在 `…/MagicDub/cli/`，**不**打开 skills 的 `project.json`；本线不读 skills 凭据文件 |
 | 架构 | **三层编排**：pipeline → step（fixed／slot）→ adapter；依赖只向下；pipeline 不感知具体 adapter 实现；adapter 不感知 pipeline／state／正式路径 |
-| 产出 | 配音成片 MP4、混音母版 WAV、SRT；人民币费用 ledger + 汇总 |
+| 产出 | 配音成片 MP4、SRT（文件名 `{原视频 stem}_MagicDub.*`，写在**原视频同目录**）；人民币费用 ledger + 汇总；**不**再交付独立混音 WAV／`exports/` |
 | 非目标 | 口型修正、下载上游（首版）、Web／Cloud |
 
 ---
 
 ## 2. v0.1.0 实现范围（开发与验收权威）
 
-目标：每个 slot **一个** adapter，**一次全新任务**从 `start` 串行跑到 `finish`，产出成片／母版／SRT。先跑通实测；本版不做续跑与迭代预留行为。
+目标：每个 slot **一个** adapter，**一次全新任务**从 `start` 串行跑到 `finish`，产出成片／SRT。先跑通实测；本版不做续跑与迭代预留行为。
 
 ### 2.1 做
 
@@ -63,7 +63,7 @@
 
 `openrouter/fish-audio/s2.1-pro-free`／`openrouter/fish-audio/s2.1-pro`：OpenRouter Instant clone（`POST /api/v1/audio/speech` JSON，模型分别为 `fish-audio/s2.1-pro-free:free`／`fish-audio/s2.1-pro`）；`input_references`＝参考音频＋`src.text`；`response_format=pcm` 后无损封 WAV；费用口径同官方 Fish（免费 0／付费 UTF-8 字节 × $0.000015 × 7）。启用：`slots.tts: [openrouter/fish-audio/s2.1-pro]` 等。
 
-`mvsep/dnr-v3`：apex `https://mvsep.com/api/separation/create`（非 de2）；DnR v3 Mel+SCNet；上传前将 slot 音频 **无损转 FLAC** 再经 fal CDN URL；`speech` 保留，music+sfx 合成 `non_speech`；计费每次 1 积分 × $0.00／积分 × 汇率 7。启用：`slots.sep: [mvsep/dnr-v3]`。免费档约 100 MB／10 min；FLAC 用于缓解 demux WAV 体积触顶。
+`mvsep/dnr-v3`：apex `https://mvsep.com/api/separation/create`（非 de2）；DnR v3 Mel+SCNet；slot 音频 **原样**经 fal CDN URL 上传；**`output_format` 按输入探针选**（mp3→0／其它有损→3 m4a；无损≤16→2 flac16；≥24→5 flac24；浮点／32bit→4 wav32；失败默认 2）；`speech` 保留，music+sfx 合成 `non_speech`；计费 **floor(音频秒／60) 积分** × **$0.025／积分** × 汇率 **7**（实测 119s→1、121s→2）。启用：`slots.sep: [mvsep/dnr-v3]`。体积依赖 demux 产物（优先原编码 copy）。
 
 百炼 ASR：输入经 fal CDN 公网 HTTPS URL；adapter 内转 16 kHz 单声道 PCM16；异步 transcription。Fun-ASR 计费：转写 `content_duration_in_milliseconds`（缺则 `usage.duration`）× 北京 ¥0.00022／秒。Qwen Audio 3.1 filetrans：北京 ¥0.8／百万输入 Token + ¥2.7／百万输出 Token；`usage` 缺 token 字段时 `cost_cny` 为 null。
 
@@ -103,11 +103,11 @@
 | --- | --- | --- |
 | M0 | 骨架 | `uv tool install .` → `magicdub --version`；目录树；ruff |
 | M1 | 状态与路径 | state 原子写、file_ref、commit、任务目录、ULID、run.lock、配置语义 |
-| M2 | start + demux | video／audio.wav／silent_video.mp4 |
+| M2 | start + demux | video／`audio.<ext>`（优先原编码 copy）／silent_video.mp4 |
 | M3 | sep + asr | speech／non_speech；sentences；空句失败 |
 | M4 | clipping + translation | src.wav；attempt 1 译文；ledger |
 | M5 | tts + fitting | attempt≤3；三分支 |
-| M6 | alignment + mixing + finish | final.{mp4,wav,srt}；`done` |
+| M6 | alignment + mixing + finish | `{stem}_MagicDub.{mp4,srt}` 写到原视频同目录；`done` |
 | M7 | 端到端 | 30–90 s 英文样片**一次新任务**；费用可加总；**不测续跑** |
 
 M0 依赖：Python ≥ 3.12；`httpx`、`pyyaml`、`python-ulid`、`questionary`（及传递依赖）；系统 `ffmpeg`／`ffprobe`。
@@ -129,7 +129,7 @@ CLI → pipeline → step（fixed:* | slot:*）→ adapter（仅 slot 挂载）
 | --- | --- | --- | --- |
 | **pipeline** | step 名字与 `StepResult`（`ok`／错误码／message；slot 成功时可带 `adapter_id` **字符串**供 ledger） | 具体 adapter 类、供应商 SDK、`AdapterError`、厂商传输细节 | 选下一步、分支／循环、更新编排态；不做 demux／API／文件厂商协议 |
 | **step**（fixed／slot） | 本 step 的 assets 契约；slot 另知「如何按 order 取 adapter、如何把 adapter 成败映射为 `StepResult`」 | pipeline 内部调度算法；其他 step 的实现 | 读 input → 执行 → 校验 → **写 assets** → return；**禁止调用其他 step** |
-| **adapter** | slot 传入的规范化输入；协议／上传／轮询／下载／本地计费（可直接 ffmpeg、可共用 `fal_api`） | pipeline、state.json、正式 `media/`／`exports/`、其他 adapter 的业务逻辑 | 只写 `tmp/<step>/`；return 产物引用与 **`cost_cny`**；不写 state、不碰正式路径 |
+| **adapter** | slot 传入的规范化输入；协议／上传／轮询／下载／本地计费（可直接 ffmpeg、可共用 `fal_api`） | pipeline、state.json、正式 `media/`、交付物目录、其他 adapter 的业务逻辑 | 只写 `tmp/<step>/`；return 产物引用与 **`cost_cny`**；不写 state、不碰正式路径 |
 
 依赖方向：**只允许上层依赖下层契约，禁止下层 import 上层编排。**  
 - pipeline **不得** `import` 具体 adapter 或 `get_adapter`。  
@@ -148,9 +148,9 @@ CLI → pipeline → step（fixed:* | slot:*）→ adapter（仅 slot 挂载）
 2. adapter 只 return；slot 负责把产物 **原样 commit** 到正式路径并写 assets／ledger（见第 8 条）。  
 3. 状态只存相对任务根的 path + sha256 + size_bytes 与标量；费用 CNY，精度 `0.00000001`。  
 4. step 名：业务名原样（`demux`／`sep`／`asr`／`translation`／`tts`）；自拟用名词（`clipping`／`duration_fitting`／`alignment`／`mixing`）。  
-5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：生成音频时长秒用 `wave`（非 wav 则 `ffprobe`）量测后 **ceil** × **$0.002** × 汇率 **7**；fal Whisper：queue status 的 `metrics.inference_time`（否则结果头 `x-fal-raw-time`）**ceil** × **$0.0008** × 汇率 **7**——Usage 偶发 `$0.00125` 待供应商澄清前按 Pricing API 的 0.0008 估算；fal Demucs：输入音频时长秒 **ceil** × **$0.0007** × 汇率 **7**；fal SAM Audio：ceil(输出秒／30) × **$0.05**（每多一个 rerank 候选另 +$0.025／30s）× 汇率 **7**；MVSep DnR v3：每次成功分离 **1 积分** × **$0.00／积分** × 汇率 **7**；百炼 Fun-ASR：`content_duration` 秒 × **¥0.00022**（北京）；百炼 Qwen Audio 3.1 filetrans：输入／输出 Token × 北京 **¥0.8／¥2.7 每百万**；Fish S2.1 Pro：目标文本 UTF-8 字节 × **$0.000015** × 汇率 **7**（免费入口为 0））。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。  
+5. **adapter 输出契约（费用）**：成功时 return 映射必须含 **`cost_cny`**（`float`，人民币；与 ledger／`assets.cost` 同精度）。计费规则由该 adapter 按供应商文档自行实现（例如 DeepSeek：token usage × 单价；fal IndexTTS2：生成音频时长秒用 `wave`（非 wav 则 `ffprobe`）量测后 **ceil** × **$0.002** × 汇率 **7**；fal Whisper：queue status 的 `metrics.inference_time`（否则结果头 `x-fal-raw-time`）**ceil** × **$0.0008** × 汇率 **7**——Usage 偶发 `$0.00125` 待供应商澄清前按 Pricing API 的 0.0008 估算；fal Demucs：输入音频时长秒 **ceil** × **$0.0007** × 汇率 **7**；fal SAM Audio：ceil(输出秒／30) × **$0.05**（每多一个 rerank 候选另 +$0.025／30s）× 汇率 **7**；MVSep DnR v3：**floor(输入音频秒／60) 积分** × **$0.025／积分** × 汇率 **7**（实测 119s→1、121s→2）；百炼 Fun-ASR：`content_duration` 秒 × **¥0.00022**（北京）；百炼 Qwen Audio 3.1 filetrans：输入／输出 Token × 北京 **¥0.8／¥2.7 每百万**；Fish S2.1 Pro：目标文本 UTF-8 字节 × **$0.000015** × 汇率 **7**（免费入口为 0））。slot／pipeline **不得**为取费再调供应商 Platform 账单接口，以免与具体云厂商耦合上移。仅在确实无法估算时 `cost_cny` 可为 `null`（ledger 照记；不累加桶）。  
 6. **媒体与厂商传输（务实）**：adapter 可直接调 ffmpeg／ffprobe、直接上传／下载、共用包级 `fal_api`（或同类 queue／upload 辅助）。**不**为假想的多存储／多厂商预先建 MediaSession／capability／provider 中台。将来若确需阿里云 OSS 等与 fal CDN 并列，再在那时抽可选上传实现。  
-7. **编排边界仍有效**：pipeline 不 `import` 具体 adapter／`get_adapter`；adapter 不读／写 `state.json`、不碰正式 `media/`／`exports/`、不感知 pipeline；slot 给路径与凭据、消费 `cost_cny`。换／加 adapter 默认只动该 adapter 目录与 registry。  
+7. **编排边界仍有效**：pipeline 不 `import` 具体 adapter／`get_adapter`；adapter 不读／写 `state.json`、不碰正式 `media/`／交付目录、不感知 pipeline；slot 给路径与凭据、消费 `cost_cny`。换／加 adapter 默认只动该 adapter 目录与 registry。  
 8. **slot 原样保留 adapter 产出**：各 slot（sep／asr／translation／tts）对 adapter 返回的文件／文本 **只 commit／写 state，不做转码、重采样、改封装或其它内容处理**。正式路径扩展名跟随 adapter 落盘后缀。需要某种格式时，由**使用方**（下一 adapter 或 fixed step）自行处理，不在上一 slot 末尾预转。Adapter 侧：若供应商 API **提供输出格式选项**，选**质量最高**的一档（通常 `wav` 优于 `mp3`）；无选项则接受其唯一／默认格式并按远程扩展名落盘。Adapter 契约内自产的衍生轨（如 Demucs 本地算的 `non_speech`）除外。
 
 ### 3.4 已知实现备注
@@ -233,7 +233,8 @@ flowchart TD
 ### 5.2 fixed:demux
 
 - 入：`src.video`  
-- 出：`src.audio`（原采样率／声道 float32 WAV）、`src.silent_video`（`-an -c:v copy`）
+- 出：`src.audio`、`src.silent_video`（`-an -c:v copy`）  
+- **音频**：`ffprobe` 首条音轨；能映射到常见封装时 **`-c:a copy`** 落盘为 `media/src/audio.<ext>`（如 AAC→`.m4a`、Opus→`.opus`、MP3→`.mp3`、FLAC→`.flac`、PCM→`.wav`）；未知编码或 copy 失败则回退 **`pcm_f32le` WAV**。不提升有损源音质，避免无谓膨胀体积。
 
 ### 5.3 slot:sep
 
@@ -281,15 +282,16 @@ flowchart TD
 
 ### 5.10 fixed:mixing
 
-- 入：各句采用稿的 `aligned_audio`／`text`、时间窗、`non_speech`、`silent_video`  
-- 出：`tgt.final_video`／`final_audio`／`srt`  
-- 母版 WAV：48 kHz float32；成片：AAC 320k、画面 copy；清描述性元数据（保留播放所需时间轴／旋转／色彩等）  
-- SRT：采用稿译文；`,，.。` → 半角空格，合并空格；保留 ?! 与小数点；不烧录
+- 入：各句采用稿的 `aligned_audio`／`text`、时间窗、`non_speech`、`silent_video`；`assets.src.input_path`（用户原视频绝对路径）  
+- 出：仅 **`tgt.final_video`** 与 **`tgt.srt`**（`final_audio` 恒为空，不再交付独立 WAV）  
+- 交付位置：原视频**同目录**；文件名 `{原视频 stem}_MagicDub.mp4`／`.srt`（扩展名不变）  
+- 混音仍在 `tmp/mixing/` 生成中间 WAV 仅供 mux，不落交付物；成片 AAC 320k、画面 copy；清描述性元数据  
+- SRT：采用稿译文；`,，.。` → 半角空格，合并空格；保留 ?! 与小数点；不烧录  
+- state 中任务目录外的交付物 path 存**绝对路径**；目录内产物仍为相对 `task_root`
 
 ### 5.11 finish
 
-校验三文件与句数；`run.status=done`；打印路径、**视频时长**（探测源 `video`／`silent_video`／`audio`）、**运行时长**（`created_at` → `finish.finished_at`）与费用摘要。
-
+校验成片／SRT 两文件与句数；`run.status=done`；打印路径、**视频时长**、**运行时长**与费用摘要（无独立 audio 行）。
 ---
 
 ## 6. 状态文件 `state.json`
@@ -312,11 +314,11 @@ flowchart TD
 
 ### 6.3 `assets`
 
-文件引用一律相对任务根、`/` 分隔。
+任务目录内文件引用相对任务根、`/` 分隔；**目录外**交付物（成片／SRT）存**绝对路径**。
 
-- `src`：language、video、audio、silent_video、speech、non_speech、transcript  
+- `src`：language、**input_path**（用户原视频绝对路径，供交付命名与落盘）、video、audio、silent_video、speech、non_speech、transcript  
 - `sentences[]`：id、start_ms、end_ms、speaker_id、selected_attempt；`src{text,audio,audio_duration}`；`tgt[]{attempt,text,audio,audio_duration,fitting_ratio,selection,aligned_audio}`  
-- `tgt`：language、final_video、final_audio、srt  
+- `tgt`：language、final_video、final_audio（恒空／不交付）、srt  
 - `cost`：sep／asr／translation／tts／**total**（ledger 汇总；返工费计入 translation／tts；**无** duration_fitting 费用项）
 
 `selection`：`fitting_pass|forced|rejected`；每句非 rejected 至多一条；只由 pipeline 写。实际 adapter 只记 ledger。
@@ -370,8 +372,8 @@ slots:
   media/sentences/<id>/src.wav   # clipping（fixed）产物
   media/sentences/<id>/tgt/attempt_<n>.*   # 扩展名随 TTS adapter 默认输出
   media/sentences/<id>/tgt/attempt_<n>.aligned.*  # alignment（fixed）
-  exports/final.{mp4,wav,srt}
   tmp/<step>/…
+# 交付物不在任务目录：与原视频同目录的 {stem}_MagicDub.{mp4,srt}
 ```
 
 ### 7.3 源码树（包内）
@@ -406,7 +408,7 @@ src/magicdub_cli/
 
 ## 9. 开发入口
 
-1. 克隆／使用 `magicdub-cli`（当前正式线 v0.2.11）。  
+1. 克隆／使用 `magicdub-cli`（当前正式线 v0.3.0）。  
 2. 新工作以已发布行为与本文为准；**不要**按已撤销的 v0.3.0 媒体解耦计划开工。  
 3. API 端点与计费可从已验收的 `magicdub-skills` 移植，须适配本仓库 adapter 契约。  
 4. 系统依赖：`ffmpeg`、`ffprobe`。

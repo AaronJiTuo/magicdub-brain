@@ -4,7 +4,19 @@
 
 ## 当前阶段
 
-- 2026-09-26：**[发布 magicdub-cli v0.2.11](events/2026-09/2026-09-26_010323_发布magicdub-cli_v0211.md)**。`latest`→v0.2.11（`3e2908a`）。finish 时长报告＋mvsep FLAC。
+- 2026-09-27：**[发布 magicdub-cli v0.3.0](events/2026-09/2026-09-27_233706_发布magicdub-cli_v030.md)**。`latest`→v0.3.0（`97f201f`）。交付物／demux copy／mvsep 格式与按分钟计费。
+
+- 2026-09-27：**[mvsep 计费按分钟向下取整 × $0.025](events/2026-09/2026-09-27_140228_mvsep计费按分钟向下取整.md)**。已随 v0.3.0 发布。
+
+- 2026-09-27：**[mvsep 按输入选择 output_format](events/2026-09/2026-09-27_132349_mvsep按输入选择output_format.md)**。已随 v0.3.0 发布。
+
+- 2026-09-27：**[mvsep 取消上传前转 FLAC](events/2026-09/2026-09-27_124921_mvsep取消上传前转FLAC.md)**。已随 v0.3.0 发布。
+
+- 2026-09-27：**[demux 优先原编码流拷贝](events/2026-09/2026-09-27_124220_magicdub-cli_demux优先原编码流拷贝.md)**。已随 v0.3.0 发布。
+
+- 2026-09-27：**[交付物改为原视频同目录两文件](events/2026-09/2026-09-27_075200_magicdub-cli交付物改为原视频同目录两文件.md)**。已随 v0.3.0 发布。
+
+- 2026-09-26：**[发布 magicdub-cli v0.2.11](events/2026-09/2026-09-26_010323_发布magicdub-cli_v0211.md)**。`latest`曾为 v0.2.11（`3e2908a`）；现已被 v0.3.0 取代。
 
 - 2026-09-26：**[mvsep/dnr-v3 上传前转 FLAC](events/2026-09/2026-09-26_004100_mvsep上传前转FLAC.md)**。已随 v0.2.11 发布。
 
@@ -250,7 +262,7 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 v0.2.11）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。可选 `mvsep/dnr-v3`、百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS；交互 `magicdub config`；finish 报告含视频／运行时长；mvsep 上传前 FLAC。原 v0.3.0 媒体解耦计划已撤销。`curl -fsSL https://raw.githubusercontent.com/shishengkai/magicdub-cli/main/install.sh | sh`。
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 **v0.3.0**，`97f201f`）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。交付物为原视频同目录 `{stem}_MagicDub.{mp4,srt}`；demux 优先原编码 copy；mvsep 原样上传、动态 `output_format`、按分钟 floor × $0.025 × 7。可选百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS；交互 `magicdub config`；finish 报告含视频／运行时长。原「§2B 媒体解耦」计划已撤销，与本 v0.3.0 无关。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 
