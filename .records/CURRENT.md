@@ -4,7 +4,13 @@
 
 ## 当前阶段
 
-- 2026-09-28：**[发布 magicdub-cli v0.3.1](events/2026-09/2026-09-28_020200_发布magicdub-cli_v031.md)**。`latest`→v0.3.1（`69e8fdf`）。设置菜单：语音翻译／语音分离。
+- 2026-10-20：**[MVSEP 免费额度监测资料已登记，供未来降成本改造参考](events/2026-10/2026-10-20_030539_记录MVSEP免费额度监测作为未来降成本参考.md)**。用户提供 [监测草稿](../Drafts/MVSEP免费方案/MVSEP免费额度监测记录.md)、3 份 CSV 与 4 张图，覆盖 10-02～10-19 的 90 秒探针；草稿提出闲时时段与分段估时修正公式。本轮未重算统计或复核拟合；保留约 17 秒轮询精度、剔除极端值及高预估区间样本少的边界。后续降成本设计先查此资料；尚未进入 Release 或实施自动切换。
+
+- 2026-10-01：**[环境变量认证成功并核验 MVSEP 队列](events/2026-10/2026-10-01_222448_使用环境变量成功验证MVSEP个人队列摘要.md)**。使用进程 `MVSEP_API_KEY` 后两接口均 HTTP 200；22:24 快照：registered 账户免费额度 50/50，本人 queued=0、processing=0、ahead=0、估时 null，全集群吞吐 30.3 次/分钟；公共等待 185、处理 23。凭据文件先前遭拒不代表环境变量不可用，账户查询阻塞已解除；该次查询未实测非空排队估时；后续用户监测资料见 2026-10-20 条目。该次未创建分离任务或修改实现。
+
+- 2026-09-29：**[发布 magicdub-cli v0.4.0](events/2026-09/2026-09-29_164856_发布magicdub-cli_v040.md)**。`latest`→v0.4.0，远端 main 与 tag 均为 `7a7a608`。上下文约束时长改写、整批校验、相同文本音频复用及每轮留痕已发布；保留 deepseek-flash 与原时长最近选稿策略。92 项测试通过，包构建及隔离安装通过；CLI 工作区干净。用户选择长期实际使用观察，本次未做视频验收。日常安装未升级，可运行 `magicdub update`；[计划与结果](../Drafts/magicdub-cli/2026-09-29_上下文约束时长改写改造计划.md)已同步发布状态。
+
+- 2026-09-28：**[发布 magicdub-cli v0.3.1](events/2026-09/2026-09-28_020200_发布magicdub-cli_v031.md)**。曾为 `latest`（`69e8fdf`）；现已被 v0.4.0 取代。设置菜单：语音翻译／语音分离。
 
 - 2026-09-27：**[发布 magicdub-cli v0.3.0](events/2026-09/2026-09-27_233706_发布magicdub-cli_v030.md)**。曾为 `latest`（`97f201f`）；现已被 v0.3.1 取代。交付物／demux copy／mvsep 格式与按分钟计费。
 
@@ -239,6 +245,8 @@
 
 ## 文档与实际状态漂移
 
+- Releases/06 尚未同步 CLI v0.4.0 新增的全文目标译稿上下文、严格整批响应校验、相同文本音频复用与提前结束规则；见[本次改造记录](events/2026-09/2026-09-29_163241_完成CLI上下文约束时长改写与离线回归.md)。时长最近候选政策保持不变；代码已随 v0.4.0 发布，正式规范与日常安装尚未同步。
+
 - Releases/05 尚未同步 OpenRouter Fish 双入口和五种 TTS 选项。已随 v0.6.1 发布并完成正式安装升级验证；见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 
 - Releases/05 尚未同步 Qwen Audio 3.0 ASR 可选模型。已随 v0.6.0 发布并验证正式安装；全长质量尚未验收，见 [Qwen 接入记录](events/2026-09/2026-09-19_003442_接入QwenAudio30ASR可选模型并完成本地验证.md)。
@@ -264,7 +272,9 @@
 
 ## 下一步与边界
 
-- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 **v0.3.1**，`69e8fdf`）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。交付物为原视频同目录 `{stem}_MagicDub.{mp4,srt}`；demux 优先原编码 copy；mvsep 原样上传、动态 `output_format`、按分钟 floor × $0.025 × 7。可选百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS；交互 `magicdub config`（菜单文案：语音翻译／语音分离／语音识别／语音合成）；finish 报告含视频／运行时长。原「§2B 媒体解耦」计划已撤销，与 v0.3.0／v0.3.1 无关。
+- CLI 上下文改写：本地工程验证已完成，不再以提供样片作为前置条件；用户选择长期使用观察。代码提交、推送和 v0.4.0 发布已完成；日常安装尚未升级，用户可通过 `magicdub update` 获取新版。
+
+- magicdub-cli：**public**；安装／`update` 默认最新正式 Release（当前 **v0.4.0**，`7a7a608`）。规范见 [Releases/06](../Releases/06_magicdub-cli系统设计.md)。交付物为原视频同目录 `{stem}_MagicDub.{mp4,srt}`；demux 优先原编码 copy；mvsep 原样上传、动态 `output_format`、按分钟 floor × $0.025 × 7。可选百炼 ASR、`fal/sam-audio`、Fish／OpenRouter Fish TTS；交互 `magicdub config`（菜单文案：语音翻译／语音分离／语音识别／语音合成）；finish 报告含视频／运行时长。原「§2B 媒体解耦」计划已撤销，与 v0.3.0／v0.3.1 无关。
 
 - OpenRouter Fish 可用于当前 MagicDub 单句单参考流程；后续全长测试须使用新增选项所在的本地 checkout，并配置 OPENROUTER_API_KEY。当前正式 v0.6.0 尚不含这两个新入口；本轮不改已有项目或日常安装，见[接入记录](events/2026-09/2026-09-19_024023_接入OpenRouterFish双模型并验证MagicDub逐句配音.md)。
 

@@ -1,0 +1,4 @@
+﻿id,checked_at,in_process,premium,registered,unregistered,free_left,free_max,my_queued,my_processing,my_ahead,estimated_wait_seconds,throughput_per_min,recovered,error_message
+1,2026-10-06T04:46:37.561891+00:00,23,0,231,373,30,50,0,0,0,,32.2,0,
+2,2026-10-06T05:07:51.259818+00:00,23,0,57,99,31,50,0,0,0,,29.5,0,
+3,2026-10-06T06:02:13.484314+00:00,18,0,0,0,31,50,0,0,0,,24.0,1,
